@@ -1,222 +1,31 @@
-
+---
 import Layout from '../layouts/Layout.astro';
-
-const socials = [
-	{ label: 'GitHub', url: 'https://github.com/your-handle' },
-	{ label: 'LinkedIn', url: 'https://www.linkedin.com/in/your-handle' },
-	{ label: 'X', url: 'https://x.com/your-handle' }
-];
-
-const skills = [
-	'UX/UI Design',
-	'Visual Prototyping',
-	'Product Discovery',
-	'Design Systems',
-	'Front-end Development'
-];
-
-const timeline = [
-	{
-		year: '2024 - Present',
-		title: 'Product Designer',
-		detail: 'Crafting cohesive product experiences for SaaS teams with a focus on storytelling and ship-ready components.'
-	},
-	{
-		year: '2022 - 2024',
-		title: 'Freelance Designer & Developer',
-		detail: 'Partnered with startups to ship lightweight design systems and brand-aligned websites in rapid iterations.'
-	},
-	{
-		year: '2020 - 2022',
-		title: 'Design Intern',
-		detail: 'Explored motion, layout, and interaction design while supporting marketing campaigns and event branding.'
-	}
-];
-
-const projects = [
-	{
-		title: 'Voyager Workspace',
-		context: 'B2B SaaS Platform',
-		detail:
-			'Streamlined onboarding and dashboard interactions for a remote collaboration suite used by 10k+ distributed teams.',
-		url: '#'
-	},
-	{
-		title: 'Northbound',
-		context: 'Consumer Mobile',
-		detail:
-			'Led a redesign that reduced booking friction by 34% through refined flows, dynamic visuals, and multi-device parity.',
-		url: '#'
-	},
-	{
-		title: 'Fragment Studio',
-		context: 'Brand Identity',
-		detail:
-			'Built a modular design language and microsite launch kit for a boutique agency expanding across APAC.',
-		url: '#'
-	}
-];
-
-const principles = [
-	{
-		title: 'Narrative-first',
-		description: 'Every solution starts with a compelling story that aligns user goals with business momentum.'
-	},
-	{
-		title: 'Systems thinking',
-		description: 'Reusable patterns scale better teams; I document decisions and capture structure early.'
-	},
-	{
-		title: 'Evidence-driven',
-		description: 'Signals from research, analytics, and experiments shape the next iteration of each product surface.'
-	}
-];
-
 ---
 
 <Layout>
 	<main>
 		<section class="hero">
-			<div class="hero__badge">Product Designer / Front-end</div>
-			<div class="hero__grid">
-				<div class="hero__copy">
-					<h1><span>Kanaru-style</span> portfolio crafted for modern teams.</h1>
-					<p>
-						I help growing teams translate complex ideas into inviting product experiences that feel effortless, human,
-						and ready to ship.
-					</p>
-					<div class="hero__cta">
-						<a class="button button--primary" href="#projects">View projects</a>
-						<a class="button button--ghost" href="#contact">Let us talk</a>
-					</div>
-					<ul class="hero__socials">
-						{socials.map((item) => (
-							<li>
-								<a href={item.url} target="_blank" rel="noreferrer">{item.label}</a>
-							</li>
-						))}
-					</ul>
-				</div>
-				<div class="hero__preview">
-					<div class="hero__card">
-						<div class="hero__image" aria-hidden="true"></div>
-						<div class="hero__card-content">
-							<h2>Shion Okuga</h2>
-							<p>Designing interfaces that stand out without shouting.</p>
-							<ul>
-								<li>Based in Tokyo</li>
-								<li>Remote friendly</li>
-								<li>Japanese / English</li>
-							</ul>
-						</div>
+			<div class="badge">Available for Work</div>
+			<h1>Hi, I'm <span class="text-gradient">Your Name</span></h1>
+			<p>Web Developer & Designer creating digital experiences.</p>
+		</section>
+
+		<section class="projects">
+			<h2>Selected Projects</h2>
+			<div class="grid">
+				<div class="card">
+					<div class="card-content">
+						<span>2024</span>
+						<h3>Project Alpha</h3>
+						<p>A high-performance web application built with Astro.</p>
 					</div>
 				</div>
-			</div>
-		</section>
-
-		<section class="intro" id="about">
-			<div class="intro__surface">
-				<div class="intro__text">
-					<h2>I ship expressive, user-centered products.</h2>
-					<p>
-						From early discovery to polished delivery, my practice blends brand storytelling with practical product
-						design. I lean on rapid prototyping, honest feedback loops, and measurable outcomes to keep teams aligned.
-					</p>
-				</div>
-				<div class="intro__highlight">
-					<div>
-						<strong>6+</strong>
-						<span>Years building digital products</span>
+				<div class="card">
+					<div class="card-content">
+						<span>2023</span>
+						<h3>Project Beta</h3>
+						<p>Creative design exploration and UI implementation.</p>
 					</div>
-					<div>
-						<strong>30+</strong>
-						<span>Completed brand & product launches</span>
-					</div>
-					<div>
-						<strong>2</strong>
-						<span>Design systems currently in use</span>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="skills" id="skills">
-			<div class="section-header">
-				<span>Capabilities</span>
-				<h2>Crafting the full journey from concept to code.</h2>
-			</div>
-			<ul class="skills__list">
-				{skills.map((skill) => (
-					<li>{skill}</li>
-				))}
-			</ul>
-		</section>
-
-		<section class="principles" id="principles">
-			<div class="section-header">
-				<span>Approach</span>
-				<h2>Values that shape every collaboration.</h2>
-			</div>
-			<div class="principles__grid">
-				{principles.map((principle) => (
-					<article>
-						<h3>{principle.title}</h3>
-						<p>{principle.description}</p>
-					</article>
-				))}
-			</div>
-		</section>
-
-		<section class="timeline" id="timeline">
-			<div class="section-header">
-				<span>Experience</span>
-				<h2>Moments that shaped my practice.</h2>
-			</div>
-			<ol class="timeline__list">
-				{timeline.map((item) => (
-					<li>
-						<div class="timeline__marker" aria-hidden="true"></div>
-						<div class="timeline__content">
-							<span class="timeline__year">{item.year}</span>
-							<h3>{item.title}</h3>
-							<p>{item.detail}</p>
-						</div>
-					</li>
-				))}
-			</ol>
-		</section>
-
-		<section class="projects" id="projects">
-			<div class="section-header">
-				<span>Selected Work</span>
-				<h2>Recent collaborations and case studies.</h2>
-			</div>
-			<div class="projects__grid">
-				{projects.map((project) => (
-					<a class="project-card" href={project.url} target="_blank" rel="noreferrer">
-						<div class="project-card__meta">
-							<span>{project.context}</span>
-							<h3>{project.title}</h3>
-						</div>
-						<p>{project.detail}</p>
-						<span class="project-card__cta">View case study →</span>
-					</a>
-				))}
-			</div>
-		</section>
-
-		<section class="contact" id="contact">
-			<div class="contact__surface">
-				<div>
-					<h2>Let us build something memorable.</h2>
-					<p>
-						Open to product design roles, embedded collaborations, and front-end partnerships that value thoughtful,
-						craft-driven work.
-					</p>
-				</div>
-				<div class="contact__cta">
-					<a class="button button--primary" href="mailto:hello@example.com">Start a conversation</a>
-					<a class="button button--ghost" href="/Shion-Okuga-CV.pdf">Download CV</a>
 				</div>
 			</div>
 		</section>
@@ -225,446 +34,76 @@ const principles = [
 
 <style>
 	main {
-		max-width: var(--max-width);
+		max-width: 900px;
 		margin: 0 auto;
-		padding: 96px 24px 144px 24px;
-		display: flex;
-		flex-direction: column;
-		gap: 120px;
+		padding: 80px 20px;
 	}
 
-	.section-header {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		max-width: 620px;
+	.hero {
+		text-align: center;
+		margin-bottom: 100px;
 	}
 
-	.section-header span {
-		font-size: 14px;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--text-secondary);
-	}
-
-	h1,
-	h2,
-	h3 {
-		font-family: "Outfit", sans-serif;
-		font-weight: 600;
-		letter-spacing: -0.01em;
-		margin: 0;
+	.badge {
+		display: inline-block;
+		padding: 4px 12px;
+		border-radius: 100px;
+		background: #eef2ff;
+		color: var(--accent);
+		font-size: 0.8rem;
+		font-weight: bold;
+		margin-bottom: 20px;
 	}
 
 	h1 {
-		font-size: clamp(2.8rem, 6vw, 4.5rem);
-		line-height: 1.05;
+		font-size: 4rem;
+		margin: 0;
+		line-height: 1.1;
 	}
 
-	h1 span {
-		color: var(--accent);
+	.text-gradient {
+		background: linear-gradient(45deg, var(--accent), #ff55d2);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 
-	h2 {
-		font-size: clamp(2rem, 4vw, 3rem);
-		line-height: 1.15;
+	.hero p {
+		font-size: 1.5rem;
+		color: var(--text-sub);
+		margin-top: 20px;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 20px;
+	}
+
+	.card {
+		background: var(--card-bg);
+		border: 1px solid #eeeeee;
+		border-radius: 24px;
+		padding: 40px;
+		transition: transform 0.2s ease;
+		cursor: pointer;
+	}
+
+	.card:hover {
+		transform: translateY(-5px);
+		border-color: var(--accent);
+	}
+
+	.card span {
+		font-size: 0.8rem;
+		color: var(--text-sub);
 	}
 
 	h3 {
-		font-size: clamp(1.25rem, 2vw, 1.6rem);
+		font-size: 1.8rem;
+		margin: 10px 0;
 	}
 
-	p {
-		margin: 0;
-		color: var(--text-secondary);
-		font-size: 1.06rem;
-	}
-
-	.hero__badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 12px;
-		padding: 12px 20px;
-		border-radius: 999px;
-		background: var(--accent-soft);
-		color: var(--accent);
-		font-weight: 500;
-		font-family: "Outfit", sans-serif;
-		margin-bottom: 32px;
-	}
-
-	.hero__badge::before {
-		content: '';
-		width: 8px;
-		height: 8px;
-		border-radius: 100%;
-		background: var(--accent);
-	}
-
-	.hero__grid {
-		display: grid;
-		grid-template-columns: repeat(12, 1fr);
-		gap: 40px;
-		align-items: center;
-	}
-
-	.hero__copy {
-		grid-column: span 7;
-		display: flex;
-		flex-direction: column;
-		gap: 28px;
-	}
-
-	.hero__cta {
-		display: flex;
-		gap: 16px;
-		flex-wrap: wrap;
-		align-items: center;
-	}
-
-	.button {
-		padding: 14px 24px;
-		border-radius: 999px;
-		border: 1px solid transparent;
-		font-weight: 600;
-		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-	}
-
-	.button--primary {
-		background: var(--accent);
-		color: var(--text-inverse);
-		box-shadow: 0 18px 45px rgba(85, 112, 255, 0.3);
-	}
-
-	.button--ghost {
-		background: transparent;
-		border-color: rgba(25, 23, 21, 0.14);
-		color: var(--text-primary);
-	}
-
-	.button:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 14px 32px rgba(25, 23, 21, 0.08);
-	}
-
-	.hero__socials {
-		display: flex;
-		gap: 18px;
-		padding: 0;
-		margin: 0;
-		list-style: none;
-		color: var(--text-secondary);
-	}
-
-	.hero__socials a {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		font-weight: 500;
-	}
-
-	.hero__socials a::after {
-		content: '↗';
-		font-size: 0.9em;
-	}
-
-	.hero__preview {
-		grid-column: span 5;
-	}
-
-	.hero__card {
-		background: var(--surface-strong);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		padding: 32px;
-		display: flex;
-		flex-direction: column;
-		gap: 24px;
-		box-shadow: 0 20px 60px rgba(25, 23, 21, 0.12);
-		backdrop-filter: blur(16px);
-	}
-
-	.hero__image {
-		width: 100%;
-		aspect-ratio: 4 / 5;
-		border-radius: 20px;
-		background: linear-gradient(160deg, rgba(85, 112, 255, 0.75), rgba(246, 192, 255, 0.65));
-		position: relative;
-		overflow: hidden;
-	}
-
-	.hero__image::after {
-		content: '';
-		position: absolute;
-		inset: 12%;
-		border-radius: 24px;
-		background: linear-gradient(164deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
-	}
-
-	.hero__card-content ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		color: var(--text-secondary);
-	}
-
-	.intro__surface {
-		background: var(--surface);
-		border-radius: var(--radius-lg);
-		padding: 60px 56px;
-		border: 1px solid var(--border);
-		display: grid;
-		grid-template-columns: 1.3fr 1fr;
-		gap: 40px;
-		backdrop-filter: blur(14px);
-	}
-
-	.intro__text {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-	}
-
-	.intro__highlight {
-		display: grid;
-		gap: 28px;
-		align-content: start;
-	}
-
-	.intro__highlight strong {
-		font-size: 2.8rem;
-		display: block;
-		font-family: "Outfit", sans-serif;
-	}
-
-	.intro__highlight span {
-		color: var(--text-secondary);
-		font-size: 0.98rem;
-	}
-
-	.skills__list {
-		margin: 32px 0 0 0;
-		padding: 0;
-		list-style: none;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 16px;
-	}
-
-	.skills__list li {
-		padding: 14px 20px;
-		border-radius: 999px;
-		border: 1px solid var(--border);
-		background: rgba(255, 255, 255, 0.7);
-		backdrop-filter: blur(12px);
-		font-weight: 500;
-	}
-
-	.principles__grid {
-		margin-top: 40px;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 32px;
-	}
-
-	.principles__grid article {
-		background: var(--surface);
-		padding: 32px;
-		border-radius: var(--radius-md);
-		border: 1px solid var(--border);
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.timeline__list {
-		margin: 48px 0 0 0;
-		padding: 0;
-		list-style: none;
-		position: relative;
-	}
-
-	.timeline__list::before {
-		content: '';
-		position: absolute;
-		left: 16px;
-		top: 0;
-		bottom: 0;
-		width: 2px;
-		background: rgba(25, 23, 21, 0.1);
-	}
-
-	.timeline__list li {
-		display: grid;
-		grid-template-columns: 40px 1fr;
-		gap: 20px;
-		position: relative;
-		padding-bottom: 36px;
-	}
-
-	.timeline__list li:last-child {
-		padding-bottom: 0;
-	}
-
-	.timeline__marker {
-		width: 14px;
-		height: 14px;
-		border-radius: 50%;
-		background: var(--accent);
-		margin-top: 6px;
-		box-shadow: 0 0 0 6px rgba(85, 112, 255, 0.18);
-	}
-
-	.timeline__content {
-		background: rgba(255, 255, 255, 0.92);
-		border: 1px solid var(--border);
-		border-radius: 18px;
-		padding: 28px;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		backdrop-filter: blur(10px);
-	}
-
-	.timeline__year {
-		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--text-secondary);
-	}
-
-	.projects__grid {
-		margin-top: 44px;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 28px;
-	}
-
-	.project-card {
-		padding: 32px;
-		border-radius: var(--radius-md);
-		border: 1px solid var(--border);
-		background: rgba(255, 255, 255, 0.85);
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	.project-card:hover {
-		transform: translateY(-6px);
-		box-shadow: 0 18px 40px rgba(25, 23, 21, 0.12);
-	}
-
-	.project-card__meta span {
-		font-size: 0.85rem;
-		letter-spacing: 0.07em;
-		text-transform: uppercase;
-		color: var(--text-secondary);
-	}
-
-	.project-card__cta {
-		font-weight: 600;
-		color: var(--accent);
-	}
-
-	.contact__surface {
-		background: linear-gradient(135deg, rgba(85, 112, 255, 0.85), rgba(31, 32, 58, 0.92));
-		color: var(--text-inverse);
-		border-radius: var(--radius-lg);
-		padding: 56px;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 32px;
-		align-items: center;
-		justify-content: space-between;
-		box-shadow: 0 26px 70px rgba(40, 45, 100, 0.35);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.contact__surface::after {
-		content: '';
-		position: absolute;
-		width: 200px;
-		height: 200px;
-		top: -60px;
-		right: -40px;
-		background: radial-gradient(circle, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
-	}
-
-	.contact__surface h2,
-	.contact__surface p {
-		color: var(--text-inverse);
-	}
-
-	.contact__surface p {
-		max-width: 460px;
-		font-size: 1rem;
-		opacity: 0.9;
-	}
-
-	.contact__cta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 16px;
-	}
-
-	.contact__cta .button--ghost {
-		border-color: rgba(255, 255, 255, 0.5);
-		color: var(--text-inverse);
-	}
-
-	.contact__cta .button--ghost:hover {
-		border-color: rgba(255, 255, 255, 0.75);
-	}
-
-	@media (max-width: 960px) {
-		main {
-			gap: 96px;
-			padding: 72px 20px 120px 20px;
-		}
-
-		.hero__grid {
-			grid-template-columns: 1fr;
-		}
-
-		.hero__copy,
-		.hero__preview {
-			grid-column: span 12;
-		}
-
-		.intro__surface {
-			grid-template-columns: 1fr;
-			padding: 48px 32px;
-		}
-	}
-
-	@media (max-width: 640px) {
-		main {
-			padding: 64px 16px 96px 16px;
-		}
-
-		.hero__badge {
-			margin-bottom: 24px;
-		}
-
-		.intro__surface {
-			gap: 32px;
-		}
-
-		.timeline__list li {
-			grid-template-columns: 32px 1fr;
-		}
-
-		.contact__surface {
-			padding: 48px 28px;
-		}
+	@media (max-width: 600px) {
+		h1 { font-size: 2.5rem; }
 	}
 </style>
