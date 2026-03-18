@@ -14,59 +14,82 @@ npm run dev
 ## ビルド & デプロイ
 
 ```bash
-npm run build   # distフォルダが生成される
+npm run build
 ```
 
 Vercel に GitHub リポジトリを連携すれば自動でデプロイされます。
 
 ---
 
+## ページ構成
+
+| URL | 内容 |
+|---|---|
+| `/` | メインポートフォリオ（Hero / About / Projects / Skills / Contact）|
+| `/about` | プロフィール・資格・趣味・リンク |
+| `/works` | 全作品一覧 |
+| `/history` | 経歴年表 |
+
+入口に**スプラッシュ画面**があり、ボタンを押すとメインサイトへ遷移します。
+
+---
+
 ## カスタマイズ方法
 
-### 1. プロフィール・プロジェクトの更新
+### `src/data.js` を書き換えるだけで全ページ更新！
 
-**`src/data.js`** を書き換えるだけで全ページに反映されます。
-
+#### プロフィール（PROFILE）
 ```js
 export const PROFILE = {
-  name: "arupakani-san",       // ← 名前
-  github: "https://github.com/arupakaniisan",  // ← GitHub URL
-  twitter: null,               // ← Twitter URL（不要ならnullのまま）
-  zenn: null,                  // ← Zenn URL
-  email: null,                 // ← メールアドレス
+  displayName: "arupakani-san",
+  github:   "https://github.com/arupakaniisan",
+  linkedin: null,   // URLを入れると表示される
+  zenn:     null,
+  note:     null,
+  twitter:  null,
+  email:    null,
 };
 ```
 
-### 2. プロジェクト画像を追加する
-
-1. `public/` フォルダに画像を入れる（例: `public/projects/pet-robot.jpg`）
-2. `src/data.js` の `image` にパスを指定する
-
+#### About ページ（ABOUT）
 ```js
-{
-  id: "01",
-  title: "ペット監視ロボット",
-  image: "/projects/pet-robot.jpg",  // ← ここを変更
-  ...
-}
+export const ABOUT = {
+  profile: [
+    { label: "名前", value: "本名を入力" },
+    ...
+  ],
+  qualifications: [
+    { title: "資格名", date: "2024-xx" },
+  ],
+  hobbies: ["プログラミング", "ロボット製作", ...],
+};
 ```
 
-### 3. コンタクトフォームを実際に送信できるようにする
-
-[Formspree](https://formspree.io) で無料アカウントを作成し、
-`src/App.jsx` の `handleSubmit` 関数のコメントアウトを外す。
-
+#### 作品（WORKS）
 ```js
-const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(form),
-});
+export const WORKS = [
+  {
+    title: "作品タイトル",
+    description: "説明文",
+    image: "/works/image.jpg",  // publicフォルダに入れてパス指定
+    tags: ["Python", "React"],
+    codeUrl: "https://github.com/...",
+    demoUrl: "https://...",
+  },
+];
 ```
 
-### 4. SNSリンクを追加する
-
-`src/data.js` の `PROFILE` に URL を入れるだけで Contact セクションに自動で表示されます。
+#### 経歴（HISTORY）
+```js
+export const HISTORY = [
+  {
+    date: "2025年4月",
+    title: "〇〇に入学",
+    description: "説明文",
+    type: "education",  // "life" | "education" | "dev" | "hackathon" | "work"
+  },
+];
+```
 
 ---
 
@@ -75,14 +98,14 @@ const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
 ```
 portfolio/
 ├── public/
-│   ├── favicon.svg          # ファビコン（変更可）
-│   └── projects/            # プロジェクト画像を入れる（自分で作成）
+│   ├── favicon.svg
+│   └── works/         # 作品画像を入れる（自分で作成）
 ├── src/
-│   ├── main.jsx             # エントリーポイント（変更不要）
-│   ├── index.css            # グローバルリセット（変更不要）
-│   ├── data.js              # ★ コンテンツはここを書き換える
-│   ├── styles.js            # CSSスタイル（デザイン変更したい場合）
-│   └── App.jsx              # メインコンポーネント
+│   ├── main.jsx       # エントリーポイント（変更不要）
+│   ├── index.css      # グローバルリセット（変更不要）
+│   ├── data.js        # ★ コンテンツはここを書き換える
+│   ├── styles.js      # CSS（デザイン変更したい場合）
+│   └── App.jsx        # 全ページのコンポーネント
 ├── index.html
 ├── vite.config.js
 └── package.json
@@ -91,6 +114,7 @@ portfolio/
 ## 技術スタック
 
 - React 18
+- React Router v6
 - Vite 5
 - Space Grotesk / Space Mono (Google Fonts)
 - Vercel（デプロイ）

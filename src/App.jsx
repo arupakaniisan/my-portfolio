@@ -1,210 +1,301 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, NavLink, useLocation } from "react-router-dom";
 import styles from "./styles.js";
-import { PROFILE, SKILLS, PROJECTS, ABOUT_CARDS } from "./data.js";
+import { PROFILE, ABOUT, SKILLS, WORKS, HISTORY } from "./data.js";
 
-/* ── アーキテクチャ図（プロジェクト01専用） ── */
-function ArchDiagram() {
+/* ══════════════════════════════════════════
+   SVG アイコン
+══════════════════════════════════════════ */
+const IconGitHub = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+  </svg>
+);
+const IconLinkedIn = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </svg>
+);
+const IconZenn = () => (
+  <svg width="20" height="20" viewBox="0 0 88 88" fill="currentColor">
+    <path d="M0 0h88v88H0z" fill="none"/>
+    <path d="M9.5 74.3L33.6 13h10.8L20.3 74.3H9.5zM43.5 74.3L67.6 13H78L53.9 74.3H43.5zM56 56.5h22.5v10H56z"/>
+  </svg>
+);
+const IconNote = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+  </svg>
+);
+
+/* ══════════════════════════════════════════
+   スプラッシュ画面
+══════════════════════════════════════════ */
+function SplashScreen({ onEnter }) {
+  const [visible, setVisible] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 50);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleEnter = () => {
+    setLeaving(true);
+    setTimeout(onEnter, 700);
+  };
+
+  const socialLinks = [
+    { url: PROFILE.github,   label: "GitHub" },
+    { url: PROFILE.linkedin, label: "LinkedIn" },
+    { url: PROFILE.zenn,     label: "Zenn" },
+    { url: PROFILE.note,     label: "note" },
+    { url: PROFILE.twitter,  label: "X" },
+  ].filter(l => l.url);
+
   return (
-    <div className="arch">
-      <div className="arch-label">SYSTEM ARCHITECTURE</div>
-      <div className="arch-row">
-        <div className="abox green">Hardware</div>
-        <div className="aarrow">→</div>
-        <div className="abox blue">RPi 5</div>
-        <div className="aarrow">→</div>
-        <div className="abox">ngrok</div>
-        <div className="aarrow">→</div>
-        <div className="abox green">LINE</div>
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: "#0b0c0e",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      transition: "opacity .7s ease",
+      opacity: leaving ? 0 : visible ? 1 : 0,
+      pointerEvents: leaving ? "none" : "auto",
+    }}>
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "linear-gradient(rgba(0,229,160,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,.04) 1px,transparent 1px)",
+        backgroundSize: "60px 60px",
+        maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%,#000 40%,transparent 100%)",
+      }} />
+      <div style={{
+        position: "relative", zIndex: 1,
+        display: "flex", flexDirection: "column", alignItems: "center",
+        textAlign: "center", padding: "0 24px",
+        transform: leaving ? "translateY(-12px)" : visible ? "translateY(0)" : "translateY(16px)",
+        transition: "transform .7s ease, opacity .7s ease",
+        opacity: leaving ? 0 : visible ? 1 : 0,
+      }}>
+        {/* アバター */}
+        <div style={{
+          width: 92, height: 92, borderRadius: "50%",
+          background: "rgba(0,229,160,.1)", border: "2px solid rgba(0,229,160,.3)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 38, fontFamily: "'Space Mono',monospace", fontWeight: 700,
+          color: "#00e5a0", marginBottom: 24, overflow: "hidden",
+        }}>
+          {PROFILE.avatar
+            ? <img src={PROFILE.avatar} alt={PROFILE.displayName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            : PROFILE.displayName[0].toUpperCase()
+          }
+        </div>
+
+        <h1 style={{ fontFamily: "'Space Mono',monospace", fontSize: "clamp(22px,5vw,36px)", fontWeight: 700, letterSpacing: "-1px", color: "#eceef2", marginBottom: 10 }}>
+          {PROFILE.displayName}
+        </h1>
+        <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 12, color: "#6b7280", letterSpacing: ".5px", marginBottom: 28 }}>
+          {PROFILE.university} — {PROFILE.department}
+        </p>
+
+        {/* SNSボタン */}
+        {socialLinks.length > 0 && (
+          <div style={{ display: "flex", gap: 10, marginBottom: 40, flexWrap: "wrap", justifyContent: "center" }}>
+            {socialLinks.map(l => (
+              <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
+                onClick={e => e.stopPropagation()}
+                style={{ fontFamily: "'Space Mono',monospace", fontSize: 12, color: "#6b7280", padding: "6px 14px", border: "1px solid #2e3340", borderRadius: 4, transition: "all .2s" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor="#00e5a0"; e.currentTarget.style.color="#00e5a0"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor="#2e3340"; e.currentTarget.style.color="#6b7280"; }}
+              >{l.label}</a>
+            ))}
+          </div>
+        )}
+
+        {/* 入るボタン */}
+        <button onClick={handleEnter} style={{
+          display: "flex", alignItems: "center", gap: 10,
+          background: "transparent", border: "1px solid #00e5a0",
+          color: "#00e5a0", borderRadius: 4, padding: "12px 28px",
+          fontSize: 14, fontWeight: 600, fontFamily: "'Space Grotesk',sans-serif",
+          cursor: "pointer", transition: "all .2s", letterSpacing: ".5px",
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background="#00e5a0"; e.currentTarget.style.color="#0b0c0e"; }}
+          onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="#00e5a0"; }}
+        >
+          ポートフォリオを見る →
+        </button>
       </div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["赤外線センサ", "ロードセル", "カメラ", "サーボ"].map(s => (
-          <div key={s} className="abox sm">{s}</div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ナビゲーション
+══════════════════════════════════════════ */
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const links = [
+    { to: "/",        label: "Home" },
+    { to: "/about",   label: "About" },
+    { to: "/works",   label: "Works" },
+    { to: "/history", label: "History" },
+  ];
+
+  return (
+    <>
+      <nav className={`nav${scrolled ? " solid" : ""}`}>
+        <NavLink to="/" className="nav-logo">
+          {PROFILE.displayName}
+          <span className="nav-cursor" />
+        </NavLink>
+        <div className="nav-links">
+          {links.map(l => (
+            <NavLink key={l.to} to={l.to} end={l.to === "/"} className={({ isActive }) => isActive ? "active" : ""}>
+              {l.label}
+            </NavLink>
+          ))}
+        </div>
+        <div className="hamburger" onClick={() => setMenuOpen(o => !o)}>
+          <span /><span /><span />
+        </div>
+      </nav>
+      <div className={`mmenu${menuOpen ? " open" : ""}`}>
+        {links.map(l => (
+          <NavLink key={l.to} to={l.to} end={l.to === "/"} className={({ isActive }) => isActive ? "active" : ""}>
+            {l.label}
+          </NavLink>
         ))}
       </div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["lgpio", "Flask", "OpenCV", "Python"].map(s => (
-          <div key={s} className="abox blue sm">{s}</div>
-        ))}
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════
+   フッター
+══════════════════════════════════════════ */
+function Footer() {
+  return (
+    <footer className="footer">
+      <span>© 2025 {PROFILE.displayName}</span>
+      <span>Built with React + Vite · Deployed on Vercel</span>
+    </footer>
+  );
+}
+
+/* ══════════════════════════════════════════
+   SNS バー（Contact 下）
+══════════════════════════════════════════ */
+function SnsBar() {
+  const links = [
+    { key: "github",   label: "GitHub",   icon: <IconGitHub />,   url: PROFILE.github },
+    { key: "linkedin", label: "LinkedIn", icon: <IconLinkedIn />, url: PROFILE.linkedin },
+    { key: "zenn",     label: "Zenn",     icon: <IconZenn />,     url: PROFILE.zenn },
+    { key: "note",     label: "note",     icon: <IconNote />,     url: PROFILE.note },
+  ].filter(l => l.url);
+  if (links.length === 0) return null;
+  return (
+    <div className="sns-bar">
+      {links.map(l => (
+        <a key={l.key} href={l.url} target="_blank" rel="noreferrer" className="sns-btn">
+          {l.icon}{l.label}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ページ: Home
+══════════════════════════════════════════ */
+function ArchDiagram() {
+  const box = (label, cls = "") => (
+    <span style={{
+      background: cls === "g" ? "rgba(0,229,160,.1)" : cls === "b" ? "rgba(59,130,246,.1)" : "var(--surface)",
+      border: `1px solid ${cls === "g" ? "rgba(0,229,160,.35)" : cls === "b" ? "rgba(59,130,246,.35)" : "var(--border2)"}`,
+      color: cls === "g" ? "var(--accent)" : cls === "b" ? "var(--accent2)" : "var(--muted2)",
+      borderRadius: 5, padding: "4px 10px", fontFamily: "var(--mono)", fontSize: 10, whiteSpace: "nowrap",
+    }}>{label}</span>
+  );
+  return (
+    <div style={{ width: "100%", padding: 24, display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--muted)", letterSpacing: 1.5, marginBottom: 4 }}>SYSTEM ARCHITECTURE</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        {box("Hardware","g")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
+        {box("RPi 5","b")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
+        {box("ngrok")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
+        {box("LINE","g")}
       </div>
-      <div className="arch-code">
-        <span className="cl">$ フロー</span>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        {["赤外線センサ","ロードセル","カメラ","サーボ"].map(s => box(s))}
+      </div>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        {["lgpio","Flask","OpenCV","Python"].map(s => box(s,"b"))}
+      </div>
+      <div style={{ marginTop: 6, padding: "10px 12px", background: "var(--accent-dim)", borderRadius: 5, border: "1px solid rgba(0,229,160,.15)", fontFamily: "var(--mono)", fontSize: 10, color: "var(--muted2)", lineHeight: 1.8 }}>
+        <span style={{ color: "var(--accent)", display: "block", marginBottom: 2 }}>$ フロー</span>
         LINE:「餌」→ Webhook → Flask → lgpio → サーボ → 給餌
       </div>
     </div>
   );
 }
 
-/* ── プロジェクトカード ── */
-function ProjectCard({ proj }) {
-  return (
-    <div className="proj">
-      <div className="proj-body">
-        <div className="proj-no">PROJECT {proj.id}</div>
-        <div className="proj-title">{proj.title}</div>
-        <div className="proj-desc">{proj.description}</div>
-        <div className="proj-tags">
-          {proj.tags.map(t => <span key={t} className="ptag">{t}</span>)}
-        </div>
-        <div className="plinks">
-          {proj.codeUrl && (
-            <a href={proj.codeUrl} target="_blank" rel="noreferrer" className="plink">
-              GitHub →
-            </a>
-          )}
-          {proj.demoUrl && (
-            <a href={proj.demoUrl} target="_blank" rel="noreferrer" className="plink primary">
-              Demo →
-            </a>
-          )}
-          {!proj.codeUrl && !proj.demoUrl && (
-            <span className="plink dim">準備中</span>
-          )}
-        </div>
-      </div>
-      <div className="proj-vis">
-        {proj.id === "01" ? (
-          <ArchDiagram />
-        ) : proj.image ? (
-          <img src={proj.image} alt={proj.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-        ) : (
-          <div className="vis-placeholder">
-            <div className="vis-icon">{proj.isHardware ? "⚙" : "◻"}</div>
-            <div className="vis-label">// 画像追加予定</div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ── コンタクトフォーム ── */
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
-  const set = key => e => setForm(f => ({ ...f, [key]: e.target.value }));
-
+  const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
   const handleSubmit = async e => {
     e.preventDefault();
-    // ★ Formspreeを使う場合はここを変更 ★
+    // Formspree使用時: コメントアウトを外してYOUR_FORM_IDを置換
     // const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(form),
+    //   method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
     // });
     // if (res.ok) setSent(true);
     setSent(true);
   };
-
-  if (sent) {
-    return (
-      <div className="form-sent">
-        <div className="form-sent-icon">✓</div>
-        <p>送信しました！ありがとうございます。</p>
-      </div>
-    );
-  }
-
+  if (sent) return (
+    <div className="form-sent">
+      <div className="form-sent-icon">✓</div>
+      <p>送信しました！ありがとうございます。</p>
+    </div>
+  );
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div className="form-row">
-        <input
-          placeholder="お名前"
-          value={form.name}
-          onChange={set("name")}
-          required
-        />
-        <input
-          type="email"
-          placeholder="メールアドレス"
-          value={form.email}
-          onChange={set("email")}
-          required
-        />
+        <input placeholder="お名前" value={form.name} onChange={set("name")} required />
+        <input type="email" placeholder="メールアドレス" value={form.email} onChange={set("email")} required />
       </div>
-      <textarea
-        placeholder="メッセージ（インターンのお誘い、ハッカソンのチーム募集など）"
-        value={form.message}
-        onChange={set("message")}
-        required
-      />
+      <textarea placeholder="メッセージ（インターンのお誘い、ハッカソンのチーム募集など）" value={form.message} onChange={set("message")} required />
       <button type="submit" className="form-btn">送信する →</button>
     </form>
   );
 }
 
-/* ── メインApp ── */
-export default function App() {
+function HomePage() {
   const [active, setActive] = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  // スクロール検知
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    const ids = ["home","about-sec","projects","skills","contact"];
+    const obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setActive(e.target.id)), { threshold: 0.3 });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    return () => obs.disconnect();
   }, []);
-
-  // アクティブセクション検知
-  useEffect(() => {
-    const ids = ["home", "about", "projects", "skills", "contact"];
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => e.isIntersecting && setActive(e.target.id)),
-      { threshold: 0.35 }
-    );
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  const navLinks = ["About", "Projects", "Skills", "Contact"];
 
   return (
     <>
-      {/* グローバルスタイル注入 */}
-      <style>{styles}</style>
-
-      {/* ── ナビゲーション ── */}
-      <nav className={`nav${scrolled ? " solid" : ""}`}>
-        <div className="nav-logo">
-          {PROFILE.displayName}
-          <span className="nav-cursor" />
-        </div>
-        <div className="nav-links">
-          {navLinks.map(l => (
-            <a
-              key={l}
-              href={`#${l.toLowerCase()}`}
-              className={active === l.toLowerCase() ? "active" : ""}
-            >
-              {l}
-            </a>
-          ))}
-          <a className="nav-cta" href="#contact">Contact</a>
-        </div>
-        {/* ハンバーガーメニュー（スマホ） */}
-        <div className="hamburger" onClick={() => setMenuOpen(o => !o)}>
-          <span /><span /><span />
-        </div>
-      </nav>
-
-      {/* モバイルメニュー */}
-      <div className={`mmenu${menuOpen ? " open" : ""}`}>
-        {navLinks.map(l => (
-          <a
-            key={l}
-            href={`#${l.toLowerCase()}`}
-            onClick={() => setMenuOpen(false)}
-          >
-            {l}
-          </a>
-        ))}
-        <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
-      </div>
-
-      {/* ── ヒーロー ── */}
+      {/* Hero */}
       <section id="home" className="hero">
         <div className="hero-grid" />
         <div className="hero-inner">
@@ -214,62 +305,44 @@ export default function App() {
           </div>
           <h1>
             {PROFILE.displayName}<br />
-            <span className="hero-accent">{PROFILE.tagline.split("×")[0]}</span>
-            ×{PROFILE.tagline.split("×")[1]}
+            <span className="hero-accent">{PROFILE.tagline.split("×")[0].trim()}</span>
+            {" × "}{PROFILE.tagline.split("×")[1].trim()}
           </h1>
-          <div className="hero-role">
-            // {PROFILE.university}　{PROFILE.department}
-          </div>
+          <div className="hero-role">// {PROFILE.university}　{PROFILE.department}</div>
           <p className="hero-desc">{PROFILE.description}</p>
           <div className="hero-btns">
-            <a className="btn btn-primary" href="#projects">作品を見る →</a>
-            <a
-              className="btn btn-outline"
-              href={PROFILE.github}
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
+            <NavLink to="/works" className="btn btn-primary">作品を見る →</NavLink>
+            {PROFILE.github && <a className="btn btn-outline" href={PROFILE.github} target="_blank" rel="noreferrer">GitHub</a>}
           </div>
           <div className="chips">
-            {SKILLS.flatMap(s => s.items).map(item => (
-              <span key={item.name} className="chip">{item.name}</span>
-            ))}
+            {SKILLS.flatMap(s => s.items).map(i => <span key={i.name} className="chip">{i.name}</span>)}
           </div>
         </div>
       </section>
 
       <div className="sep" />
 
-      {/* ── About ── */}
-      <section id="about" className="sec">
+      {/* About */}
+      <section id="about-sec" className="sec">
         <div className="sec-eye">// about</div>
         <h2 className="sec-title">About Me</h2>
         <div className="about-grid">
           <div className="about-body">
-            <p>
-              <strong>{PROFILE.university}</strong>の<strong>{PROFILE.department}</strong>に所属する学生エンジニアです。
-              ロボットを「動かす」ための制御・機械設計と、「使いやすくする」ためのソフトウェア開発、その両方を学んでいます。
-            </p>
-            <p>
-              授業でのラズパイ IoT 開発を通じて、センサーからクラウドまで一貫したシステム設計を経験。
-              Web アプリ開発にも取り組み、<strong>ハードとソフトを繋ぐエンジニア</strong>を目指しています。
-            </p>
-            <p>
-              今年はハッカソンへ積極的に参加予定。チーム開発・アジャイルな実装力を磨きながら、
-              IT 系インターンへの応募を通じて実際のプロダクト開発に携わりたいと考えています。
-            </p>
+            <p><strong>{PROFILE.university}</strong>の<strong>{PROFILE.department}</strong>に所属する学生エンジニアです。ロボットを「動かす」制御・機械設計と、「使いやすくする」ソフトウェア開発、その両方を学んでいます。</p>
+            <p>ラズパイ IoT 開発でセンサーからクラウドまで一貫したシステム設計を経験。今年はハッカソンへ積極参加予定で、<strong>IT 系インターン</strong>への応募を通じて実際のプロダクト開発に携わりたいと考えています。</p>
           </div>
           <div className="about-cards">
-            {ABOUT_CARDS.map(card => (
-              <div key={card.title} className="acard">
-                <span className={`abadge${card.variant === "blue" ? " blue" : ""}`}>
-                  {card.badge}
-                </span>
+            {[
+              { badge: "UEC", cls: "",     title: "電気通信大学",           sub: "先端ロボティクス専攻 — ロボット制御・機械設計・プログラミングを専門的に学ぶ" },
+              { badge: "HW",  cls: "blue", title: "ハードウェア × ソフトウェア", sub: "CAD設計・ラズパイ制御・センサー実装をコードと組み合わせて開発" },
+              { badge: "ACT", cls: "",     title: "ハッカソン参加予定",      sub: "今年積極的に参戦予定。短期間でアイデアを形にする実行力を磨く" },
+              { badge: "IT",  cls: "blue", title: "IT系インターン志望",      sub: "バックエンド / Web / IoT 系ポジションを中心に探しています" },
+            ].map(c => (
+              <div key={c.title} className="acard">
+                <span className={`abadge${c.cls ? " "+c.cls : ""}`}>{c.badge}</span>
                 <div>
-                  <div className="acard-title">{card.title}</div>
-                  <div className="acard-sub">{card.sub}</div>
+                  <div className="acard-title">{c.title}</div>
+                  <div className="acard-sub">{c.sub}</div>
                 </div>
               </div>
             ))}
@@ -279,20 +352,42 @@ export default function App() {
 
       <div className="sep" />
 
-      {/* ── Projects ── */}
+      {/* Projects */}
       <section id="projects" className="sec">
         <div className="sec-eye">// projects</div>
         <h2 className="sec-title">Projects</h2>
-        <div className="projs">
-          {PROJECTS.map(proj => (
-            <ProjectCard key={proj.id} proj={proj} />
+        <div className="works-grid">
+          {WORKS.slice(0, 3).map((w, i) => (
+            <div key={w.title} className="work-card">
+              <div className="work-thumb">
+                {i === 0 ? <ArchDiagram /> : w.image ? <img src={w.image} alt={w.title} /> : (
+                  <div className="work-thumb-placeholder">
+                    <div className="work-thumb-icon">◻</div>
+                    <div className="work-thumb-label">// 画像追加予定</div>
+                  </div>
+                )}
+              </div>
+              <div className="work-body">
+                <div className="work-title">{w.title}</div>
+                <div className="work-desc">{w.description}</div>
+                <div className="work-tags">{w.tags.map(t => <span key={t} className="work-tag">{t}</span>)}</div>
+                <div className="work-links">
+                  {w.codeUrl && <a href={w.codeUrl} target="_blank" rel="noreferrer" className="work-link">GitHub →</a>}
+                  {w.demoUrl && <a href={w.demoUrl} target="_blank" rel="noreferrer" className="work-link primary">Demo →</a>}
+                  {!w.codeUrl && !w.demoUrl && <span className="work-link dim">準備中</span>}
+                </div>
+              </div>
+            </div>
           ))}
+        </div>
+        <div style={{ marginTop: 24 }}>
+          <NavLink to="/works" className="btn btn-outline">すべての作品を見る →</NavLink>
         </div>
       </section>
 
       <div className="sep" />
 
-      {/* ── Skills ── */}
+      {/* Skills */}
       <section id="skills" className="sec">
         <div className="sec-eye">// skills</div>
         <h2 className="sec-title">Skills</h2>
@@ -319,53 +414,261 @@ export default function App() {
 
       <div className="sep" />
 
-      {/* ── Contact ── */}
+      {/* Contact */}
       <section id="contact" className="sec">
         <div className="sec-eye">// contact</div>
         <h2 className="sec-title">Contact</h2>
         <div className="contact-grid">
           <div className="cinfo">
             <h3>気軽にご連絡ください</h3>
-            <p>
-              インターンのお誘い、ハッカソンでのチーム募集、共同開発など、
-              どんなご連絡でも歓迎します。ハッカソン会場でお会いした方もぜひ！
-            </p>
+            <p>インターンのお誘い、ハッカソンでのチーム募集、共同開発など、どんなご連絡でも歓迎します。ハッカソン会場でお会いした方もぜひ！</p>
             <div className="socials">
-              {PROFILE.github && (
-                <a href={PROFILE.github} target="_blank" rel="noreferrer" className="soc">
-                  <span className="soc-badge">GH</span>
-                  github.com/arupakaniisan
-                </a>
-              )}
-              {PROFILE.twitter && (
-                <a href={PROFILE.twitter} target="_blank" rel="noreferrer" className="soc">
-                  <span className="soc-badge">𝕏</span>
-                  Twitter / X
-                </a>
-              )}
-              {PROFILE.zenn && (
-                <a href={PROFILE.zenn} target="_blank" rel="noreferrer" className="soc">
-                  <span className="soc-badge">Z</span>
-                  Zenn
-                </a>
-              )}
-              {PROFILE.email && (
-                <a href={`mailto:${PROFILE.email}`} className="soc">
-                  <span className="soc-badge">@</span>
-                  {PROFILE.email}
-                </a>
-              )}
+              {PROFILE.github && <a href={PROFILE.github} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">GH</span>github.com/arupakaniisan</a>}
+              {PROFILE.twitter && <a href={PROFILE.twitter} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">𝕏</span>Twitter / X</a>}
+              {PROFILE.zenn && <a href={PROFILE.zenn} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">Z</span>Zenn</a>}
+              {PROFILE.note && <a href={PROFILE.note} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">N</span>note</a>}
+              {PROFILE.email && <a href={`mailto:${PROFILE.email}`} className="soc"><span className="soc-badge">@</span>{PROFILE.email}</a>}
             </div>
           </div>
           <ContactForm />
         </div>
+        <SnsBar />
       </section>
 
-      {/* ── フッター ── */}
-      <footer className="footer">
-        <span>© 2025 {PROFILE.displayName}</span>
-        <span>Built with React + Vite · Deployed on Vercel</span>
-      </footer>
+      <Footer />
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ページ: About
+══════════════════════════════════════════ */
+function AboutPage() {
+  const socialLinks = [
+    { label: "GitHub",   icon: <IconGitHub />,   url: PROFILE.github },
+    { label: "LinkedIn", icon: <IconLinkedIn />, url: PROFILE.linkedin },
+    { label: "Zenn",     icon: <IconZenn />,     url: PROFILE.zenn },
+    { label: "note",     icon: <IconNote />,     url: PROFILE.note },
+  ].filter(l => l.url);
+
+  return (
+    <>
+      <div className="page">
+        <div className="page-eye">// about</div>
+        <h1 className="page-title">About</h1>
+
+        {/* アバター */}
+        <div className="about-avatar">
+          {PROFILE.avatar
+            ? <img src={PROFILE.avatar} alt={PROFILE.displayName} />
+            : PROFILE.displayName[0].toUpperCase()
+          }
+        </div>
+
+        {/* プロフィール表 */}
+        <div className="about-section-title" style={{ marginTop: 0 }}>プロフィール</div>
+        <div className="about-profile-grid">
+          {ABOUT.profile.map(row => (
+            <>
+              <div key={row.label + "-l"} className="about-profile-label">{row.label}</div>
+              <div key={row.label + "-v"} className="about-profile-value">{row.value}</div>
+            </>
+          ))}
+        </div>
+
+        {/* 資格 */}
+        {ABOUT.qualifications.length > 0 && (
+          <>
+            <div className="about-section-title">資格・受賞</div>
+            <div className="qual-list">
+              {ABOUT.qualifications.map(q => (
+                <div key={q.title} className="qual-item">
+                  <div className="qual-title">{q.title}</div>
+                  <div className="qual-date">{q.date}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* 趣味 */}
+        <div className="about-section-title">趣味</div>
+        <div className="hobby-tags">
+          {ABOUT.hobbies.map(h => <span key={h} className="hobby-tag">{h}</span>)}
+        </div>
+
+        {/* リンク */}
+        {socialLinks.length > 0 && (
+          <>
+            <div className="about-section-title">リンク</div>
+            <div className="social-links">
+              {socialLinks.map(l => (
+                <a key={l.label} href={l.url} target="_blank" rel="noreferrer" className="social-link">
+                  {l.icon}{l.label}
+                </a>
+              ))}
+              {PROFILE.email && (
+                <a href={`mailto:${PROFILE.email}`} className="social-link">
+                  <span style={{ fontFamily: "var(--mono)", fontSize: 12 }}>@</span>
+                  {PROFILE.email}
+                </a>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ページ: Works
+══════════════════════════════════════════ */
+function WorksPage() {
+  return (
+    <>
+      <div className="page">
+        <div className="page-eye">// works</div>
+        <h1 className="page-title">Works</h1>
+        <p style={{ fontSize: 15, color: "var(--muted2)", marginBottom: 48, fontWeight: 300 }}>
+          これまでに制作した作品の一覧です。
+        </p>
+        <div className="works-grid">
+          {WORKS.map((w, i) => (
+            <div key={w.title} className="work-card">
+              <div className="work-thumb">
+                {i === 0 ? (
+                  <div style={{ width: "100%", padding: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 9, color: "var(--muted)", letterSpacing: 1.5 }}>SYSTEM ARCHITECTURE</div>
+                    {[
+                      ["Hardware","g"], ["RPi 5","b"], ["ngrok",""], ["LINE","g"]
+                    ].reduce((acc, [label, cls], idx, arr) => {
+                      const box = <span key={label} style={{
+                        background: cls==="g"?"rgba(0,229,160,.1)":cls==="b"?"rgba(59,130,246,.1)":"var(--surface)",
+                        border:`1px solid ${cls==="g"?"rgba(0,229,160,.35)":cls==="b"?"rgba(59,130,246,.35)":"var(--border2)"}`,
+                        color: cls==="g"?"var(--accent)":cls==="b"?"var(--accent2)":"var(--muted2)",
+                        borderRadius:4, padding:"3px 8px", fontFamily:"var(--mono)", fontSize:10, whiteSpace:"nowrap",
+                      }}>{label}</span>;
+                      acc.push(box);
+                      if (idx < arr.length - 1) acc.push(<span key={"arr"+idx} style={{ color:"var(--muted)", fontSize:10 }}>→</span>);
+                      return acc;
+                    }, []).reduce((row, el, idx) => {
+                      return idx === 0 ? [<div key="row" style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>{[el]}</div>] : (React => row)(null);
+                    }, [])}
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                      {[["Hardware","g"],["→",""],["RPi 5","b"],["→",""],["ngrok",""],["→",""],["LINE","g"]].map(([l,c],i)=>(
+                        l==="→"
+                          ? <span key={i} style={{color:"var(--muted)",fontSize:10}}>→</span>
+                          : <span key={i} style={{background:c==="g"?"rgba(0,229,160,.1)":c==="b"?"rgba(59,130,246,.1)":"var(--surface)",border:`1px solid ${c==="g"?"rgba(0,229,160,.35)":c==="b"?"rgba(59,130,246,.35)":"var(--border2)"}`,color:c==="g"?"var(--accent)":c==="b"?"var(--accent2)":"var(--muted2)",borderRadius:4,padding:"3px 8px",fontFamily:"var(--mono)",fontSize:10}}>{l}</span>
+                      ))}
+                    </div>
+                    <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+                      {["lgpio","Flask","OpenCV","Python"].map(s=>(
+                        <span key={s} style={{background:"rgba(59,130,246,.1)",border:"1px solid rgba(59,130,246,.35)",color:"var(--accent2)",borderRadius:4,padding:"2px 7px",fontFamily:"var(--mono)",fontSize:9}}>{s}</span>
+                      ))}
+                    </div>
+                    <div style={{ padding:"8px 10px", background:"var(--accent-dim)", borderRadius:4, border:"1px solid rgba(0,229,160,.15)", fontFamily:"var(--mono)", fontSize:9, color:"var(--muted2)", lineHeight:1.8 }}>
+                      <span style={{ color:"var(--accent)" }}>$ フロー: </span>
+                      「餌」→ Webhook → Flask → lgpio → 給餌
+                    </div>
+                  </div>
+                ) : w.image ? (
+                  <img src={w.image} alt={w.title} />
+                ) : (
+                  <div className="work-thumb-placeholder">
+                    <div className="work-thumb-icon">◻</div>
+                    <div className="work-thumb-label">// 画像追加予定</div>
+                  </div>
+                )}
+              </div>
+              <div className="work-body">
+                <div className="work-title">{w.title}</div>
+                <div className="work-desc">{w.description}</div>
+                <div className="work-tags">{w.tags.map(t => <span key={t} className="work-tag">{t}</span>)}</div>
+                <div className="work-links">
+                  {w.codeUrl && <a href={w.codeUrl} target="_blank" rel="noreferrer" className="work-link">GitHub →</a>}
+                  {w.demoUrl && <a href={w.demoUrl} target="_blank" rel="noreferrer" className="work-link primary">Demo →</a>}
+                  {!w.codeUrl && !w.demoUrl && <span className="work-link dim">準備中</span>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ページ: History
+══════════════════════════════════════════ */
+function HistoryPage() {
+  const typeLabel = { dev: "開発", education: "学業", hackathon: "ハッカソン", work: "仕事", life: "人生" };
+  const typeDotColor = { dev: "var(--accent)", education: "var(--accent2)", hackathon: "#f59e0b", work: "#a855f7", life: "var(--border2)" };
+
+  return (
+    <>
+      <div className="page">
+        <div className="page-eye">// history</div>
+        <h1 className="page-title">History</h1>
+
+        {/* 凡例 */}
+        <div className="tl-legend">
+          {Object.entries(typeLabel).map(([type, label]) => (
+            <div key={type} className="tl-legend-item">
+              <div className="tl-legend-dot" style={{ background: typeDotColor[type] }} />
+              {label}
+            </div>
+          ))}
+        </div>
+
+        {/* タイムライン */}
+        <div className="timeline">
+          {HISTORY.map((item, i) => (
+            <div key={i} className="tl-item">
+              <div className={`tl-dot ${item.type}`} />
+              <div className={`tl-type-badge tl-type-${item.type}`}>{typeLabel[item.type]}</div>
+              <div className="tl-date">{item.date}</div>
+              <div className="tl-title">{item.title}</div>
+              {item.description && <div className="tl-desc">{item.description}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════
+   App ルート
+══════════════════════════════════════════ */
+export default function App() {
+  const [entered, setEntered] = useState(false);
+
+  if (!entered) {
+    return (
+      <>
+        <style>{styles}</style>
+        <SplashScreen onEnter={() => setEntered(true)} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <style>{styles}</style>
+      <BrowserRouter>
+        <Nav />
+        <Routes>
+          <Route path="/"        element={<HomePage />} />
+          <Route path="/about"   element={<AboutPage />} />
+          <Route path="/works"   element={<WorksPage />} />
+          <Route path="/history" element={<HistoryPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
