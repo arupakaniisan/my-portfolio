@@ -16,9 +16,60 @@ const styles = `
   --accent2-dim: rgba(59,130,246,.10);
   --sans: 'Space Grotesk', sans-serif;
   --mono: 'Space Mono', monospace;
+  /* ネオングロー */
+  --neon-glow:  0 0 6px rgba(0,229,160,.7), 0 0 20px rgba(0,229,160,.35), 0 0 40px rgba(0,229,160,.15);
+  --neon-glow-sm: 0 0 4px rgba(0,229,160,.6), 0 0 12px rgba(0,229,160,.25);
+  --neon-text:  0 0 8px rgba(0,229,160,.9), 0 0 20px rgba(0,229,160,.5);
+  --neon2-glow: 0 0 6px rgba(59,130,246,.7), 0 0 20px rgba(59,130,246,.3);
+}
+
+/* ── ネオンちかちかアニメーション ── */
+@keyframes neonFlicker {
+  0%,19%,21%,23%,25%,54%,56%,100% {
+    text-shadow: var(--neon-text);
+    opacity: 1;
+  }
+  20%,24%,55% {
+    text-shadow: none;
+    opacity: .85;
+  }
+}
+
+@keyframes neonBorderFlicker {
+  0%,19%,21%,23%,25%,54%,56%,100% {
+    box-shadow: var(--neon-glow);
+    border-color: var(--accent);
+  }
+  20%,24%,55% {
+    box-shadow: none;
+    border-color: rgba(0,229,160,.3);
+  }
+}
+
+@keyframes neonPulse {
+  0%,100% { box-shadow: var(--neon-glow-sm); }
+  50%      { box-shadow: var(--neon-glow); }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
 body { font-family: var(--sans); font-size: 16px; line-height: 1.7; }
+
+/* スキャンラインオーバーレイ */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.03) 2px,
+    rgba(0,0,0,.03) 4px
+  );
+}
 
 /* ── NAV ── */
 .nav {
