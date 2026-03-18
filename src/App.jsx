@@ -28,444 +28,8 @@ const IconNote = () => (
   </svg>
 );
 
-/* ══════════════════════════════════════════
-   スプラッシュ画面（バチバチ電流演出）
-══════════════════════════════════════════ */
-const splashCSS = `
-  @keyframes flicker {
-    0%,60%{opacity:1}
-    61%{opacity:.85} 62%{opacity:1} 63%{opacity:.9}
-    64%,72%{opacity:1}
-    73%{opacity:.4} 74%{opacity:.95} 75%{opacity:.3} 76%{opacity:.9}
-    77%,88%{opacity:1}
-    89%{opacity:.7} 90%{opacity:1} 91%{opacity:.5} 92%{opacity:1}
-    93%{opacity:.08} 94%{opacity:.85} 95%{opacity:.15} 96%{opacity:.9}
-    97%,100%{opacity:1}
-  }
-  @keyframes flicker2 {
-    0%,55%{opacity:1}
-    56%{opacity:.6} 57%{opacity:1}
-    58%,78%{opacity:1}
-    79%{opacity:.2} 80%{opacity:.8} 81%{opacity:.05} 82%{opacity:.7} 83%{opacity:1}
-    84%,100%{opacity:1}
-  }
-  @keyframes glitch {
-    0%,100%{transform:translate(0,0) skewX(0deg)}
-    91%{transform:translate(0,0) skewX(0deg)}
-    92%{transform:translate(-4px,0) skewX(-4deg)}
-    93%{transform:translate(4px,0) skewX(3deg)}
-    94%{transform:translate(-2px,1px) skewX(1deg)}
-    95%{transform:translate(0,0) skewX(0deg)}
-    97%{transform:translate(3px,-1px) skewX(-2deg)}
-    98%{transform:translate(-1px,0) skewX(0deg)}
-  }
-  @keyframes glitchR {
-    0%,89%,100%{clip-path:inset(100% 0 100% 0); transform:translate(0,0);}
-    90%{clip-path:inset(10% 0 60% 0); transform:translate(-6px,0); color:#ff003c; opacity:.7;}
-    91%{clip-path:inset(55% 0 5% 0);  transform:translate(6px,0);  color:#00f7ff; opacity:.6;}
-    92%{clip-path:inset(30% 0 40% 0); transform:translate(-3px,0); color:#fff;    opacity:.8;}
-    93%{clip-path:inset(100% 0 100% 0); transform:translate(0,0);}
-  }
-  @keyframes shake {
-    0%,100%{transform:translate(0,0)}
-    10%{transform:translate(-3px,1px)}
-    20%{transform:translate(3px,-2px)}
-    30%{transform:translate(-2px,3px)}
-    40%{transform:translate(2px,-1px)}
-    50%{transform:translate(-1px,2px)}
-    60%{transform:translate(3px,1px)}
-    70%{transform:translate(-2px,-1px)}
-    80%{transform:translate(1px,3px)}
-    90%{transform:translate(-1px,-2px)}
-  }
-  @keyframes arcFlash {
-    0%,100%{opacity:0; transform:scaleX(1)}
-    50%{opacity:1; transform:scaleX(1.04)}
-  }
-  @keyframes spark {
-    0%  {opacity:1; transform:translate(0,0) scale(1);}
-    100%{opacity:0; transform:translate(var(--sx),var(--sy)) scale(0);}
-  }
-  @keyframes scanBad {
-    0%  {transform:translateY(-100%); opacity:.6}
-    100%{transform:translateY(100vh); opacity:.2}
-  }
-  @keyframes chargeUp {
-    0%  {box-shadow:0 0 8px rgba(0,229,160,.3);}
-    50% {box-shadow:0 0 40px rgba(0,229,160,.9),0 0 80px rgba(0,229,160,.4),0 0 120px rgba(0,229,160,.2);}
-    100%{box-shadow:0 0 8px rgba(0,229,160,.3);}
-  }
-  @keyframes borderArc {
-    0%,100%{border-color:rgba(0,229,160,.5); box-shadow:0 0 12px rgba(0,229,160,.3);}
-    25%{border-color:rgba(255,255,255,.9); box-shadow:0 0 32px rgba(255,255,255,.6),0 0 64px rgba(0,229,160,.4);}
-    50%{border-color:rgba(0,229,160,.8); box-shadow:0 0 20px rgba(0,229,160,.5);}
-    75%{border-color:rgba(120,255,200,.9); box-shadow:0 0 28px rgba(120,255,200,.7),0 0 56px rgba(0,229,160,.3);}
-  }
-  @keyframes noiseShift {
-    0%{background-position:0 0}
-    100%{background-position:0 100px}
-  }
-  @keyframes btnZap {
-    0%,100%{box-shadow:0 0 10px rgba(0,229,160,.3), inset 0 0 8px rgba(0,229,160,.1);}
-    30%{box-shadow:0 0 40px rgba(0,229,160,.9),0 0 80px rgba(0,229,160,.4),inset 0 0 20px rgba(0,229,160,.3);}
-    31%{box-shadow:0 0 8px rgba(255,255,255,.8),0 0 40px rgba(0,229,160,.6),inset 0 0 10px rgba(255,255,255,.2);}
-    32%{box-shadow:0 0 40px rgba(0,229,160,.9),inset 0 0 20px rgba(0,229,160,.2);}
-    70%{box-shadow:0 0 60px rgba(0,229,160,1),0 0 100px rgba(0,229,160,.5),0 0 160px rgba(0,229,160,.2),inset 0 0 30px rgba(0,229,160,.4);}
-    71%{box-shadow:0 0 10px rgba(255,255,255,.9),inset 0 0 10px rgba(255,255,255,.3);}
-    72%{box-shadow:0 0 60px rgba(0,229,160,1),inset 0 0 20px rgba(0,229,160,.3);}
-  }
-  @keyframes whiteBurst {
-    0%,100%{opacity:0}
-    50%{opacity:1}
-  }
-  .zap-btn:hover {
-    background: #00e5a0 !important;
-    color: #0b0c0e !important;
-    animation: none !important;
-    box-shadow: 0 0 40px rgba(0,229,160,.9), 0 0 80px rgba(0,229,160,.4) !important;
-    transform: scale(1.04) !important;
-  }
-`;
+import SplashScreen from './SplashScreen.jsx';
 
-// canvasでリアルタイム稲妻を描くコンポーネント
-function LightningCanvas() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let raf;
-    let frameCount = 0;
-
-    function resize() {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // 横方向の放電アークのみ
-    function drawArc() {
-      const W = canvas.width, H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
-
-      // 1〜2本の横アーク
-      const count = 1 + (Math.random() > .6 ? 1 : 0);
-      for (let i = 0; i < count; i++) {
-        const sy = H * (.15 + Math.random() * .7);
-        const alpha = .25 + Math.random() * .5;
-        // メインライン
-        ctx.beginPath();
-        ctx.moveTo(0, sy);
-        let cx = 0;
-        while (cx < W) {
-          cx += 6 + Math.random() * 24;
-          ctx.lineTo(cx, sy + (Math.random() - .5) * 48);
-        }
-        ctx.strokeStyle = '#00e5a0';
-        ctx.lineWidth = .8 + Math.random() * .8;
-        ctx.shadowColor = '#00e5a0';
-        ctx.shadowBlur = 18;
-        ctx.globalAlpha = alpha;
-        ctx.stroke();
-        // グロー（太め・薄め）
-        ctx.beginPath();
-        ctx.moveTo(0, sy);
-        cx = 0;
-        while (cx < W) {
-          cx += 8 + Math.random() * 28;
-          ctx.lineTo(cx, sy + (Math.random() - .5) * 30);
-        }
-        ctx.lineWidth = 3;
-        ctx.globalAlpha = alpha * .15;
-        ctx.stroke();
-      }
-    }
-
-    function loop() {
-      frameCount++;
-      // 廃病院の電灯：長い沈黙のあとにぱっと放電
-      const interval = 40 + Math.floor(Math.random() * 80);
-      if (frameCount % interval === 0) {
-        drawArc();
-        const onTime = 40 + Math.random() * 120;
-        setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), onTime);
-      }
-      raf = requestAnimationFrame(loop);
-    }
-    raf = requestAnimationFrame(loop);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  return (
-    <canvas ref={canvasRef} style={{
-      position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-    }} />
-  );
-}
-
-// 白いフラッシュ
-function WhiteFlash() {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const fire = () => {
-      setOn(true);
-      setTimeout(() => setOn(false), 40 + Math.random() * 200);
-    };
-    const rand = () => setTimeout(() => { fire(); rand(); }, 2000 + Math.random() * 5000);
-    const t = rand();
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <div style={{
-      position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-      background: 'rgba(200,255,230,.04)',
-      opacity: on ? 1 : 0, transition: 'opacity .04s',
-    }} />
-  );
-}
-
-function SplashScreen({ onEnter }) {
-  const [visible, setVisible] = useState(false);
-  const [leaving, setLeaving] = useState(false);
-  const [glitchName, setGlitchName] = useState(PROFILE.displayName);
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
-  // テキストグリッチ（文字化け）
-  useEffect(() => {
-    const chars = 'アイウエオカキクケコサシスセソ░▒▓█▄▌▐▀01アイウABCDEF#@!%';
-    const orig = PROFILE.displayName;
-    let frame = 0;
-    const glitch = () => {
-      frame++;
-      if (frame % 60 < 4) {
-        const arr = orig.split('');
-        const numGlitch = 1 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < numGlitch; i++) {
-          const idx = Math.floor(Math.random() * arr.length);
-          arr[idx] = chars[Math.floor(Math.random() * chars.length)];
-        }
-        setGlitchName(arr.join(''));
-        setTimeout(() => setGlitchName(orig), 80);
-      }
-    };
-    const id = setInterval(glitch, 50);
-    return () => clearInterval(id);
-  }, []);
-
-  const handleEnter = () => {
-    setLeaving(true);
-    setTimeout(onEnter, 800);
-  };
-
-  const socialLinks = [
-    { url: PROFILE.github,   label: 'GitHub' },
-    { url: PROFILE.linkedin, label: 'LinkedIn' },
-    { url: PROFILE.zenn,     label: 'Zenn' },
-    { url: PROFILE.note,     label: 'note' },
-    { url: PROFILE.twitter,  label: 'X' },
-  ].filter(l => l.url);
-
-  return (
-    <>
-      <style>{splashCSS}</style>
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 9999,
-        background: '#020304',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        overflow: 'hidden',
-        transition: 'opacity .8s ease',
-        opacity: leaving ? 0 : visible ? 1 : 0,
-        pointerEvents: leaving ? 'none' : 'auto',
-        animation: visible ? 'flicker 11s linear infinite' : 'none',
-      }}>
-
-        {/* リアルタイム稲妻 canvas */}
-        <LightningCanvas />
-
-        {/* 白フラッシュ */}
-        <WhiteFlash />
-
-        {/* CRTスキャンライン */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.3) 2px, rgba(0,0,0,.3) 4px)',
-        }} />
-
-        {/* 高速スキャンライン */}
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: 3, zIndex: 3, pointerEvents: 'none',
-          background: 'linear-gradient(90deg,transparent,rgba(0,229,160,.6),rgba(255,255,255,.8),rgba(0,229,160,.6),transparent)',
-          animation: 'scanBad 1.8s linear infinite',
-          filter: 'blur(.5px)',
-        }} />
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: 2, zIndex: 3, pointerEvents: 'none',
-          background: 'linear-gradient(90deg,transparent,rgba(0,229,160,.3),rgba(0,229,160,.3),transparent)',
-          animation: 'scanBad 2.9s linear infinite .7s',
-        }} />
-
-        {/* グリッド（ノイズで震える） */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-          backgroundImage: 'linear-gradient(rgba(0,229,160,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,.07) 1px,transparent 1px)',
-          backgroundSize: '48px 48px',
-          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%,#000 20%,transparent 100%)',
-          animation: 'none',
-        }} />
-
-        {/* 四隅 電流コーナー */}
-        {[
-          { top:16,left:16,   borderTop:'2px solid',borderLeft:'2px solid' },
-          { top:16,right:16,  borderTop:'2px solid',borderRight:'2px solid' },
-          { bottom:16,left:16,  borderBottom:'2px solid',borderLeft:'2px solid' },
-          { bottom:16,right:16, borderBottom:'2px solid',borderRight:'2px solid' },
-        ].map((s,i)=>(
-          <div key={i} style={{
-            position:'absolute',...s,
-            width:36,height:36,
-            borderColor:'rgba(0,229,160,.9)',
-            boxShadow:'0 0 12px rgba(0,229,160,.6)',
-            zIndex:4,pointerEvents:'none',
-            boxShadow:'0 0 10px rgba(0,229,160,.35)',
-          }}/>
-        ))}
-
-        {/* 中央コンテンツ */}
-        <div style={{
-          position: 'relative', zIndex: 5,
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          textAlign: 'center', padding: '0 24px',
-          transform: leaving ? 'translateY(-16px) scale(.97)' : visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(.97)',
-          transition: 'transform .8s cubic-bezier(.16,1,.3,1), opacity .8s ease',
-          opacity: leaving ? 0 : visible ? 1 : 0,
-          
-        }}>
-
-          {/* アバター */}
-          <div style={{
-            width:96, height:96, borderRadius:'50%',
-            background:'rgba(0,229,160,.06)',
-            border:'2px solid rgba(0,229,160,.9)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            fontSize:38, fontFamily:"'Space Mono',monospace", fontWeight:700,
-            color:'#00e5a0', marginBottom:28, overflow:'hidden',
-            boxShadow:'0 0 16px rgba(0,229,160,.35), 0 0 40px rgba(0,229,160,.12)',
-          }}>
-            {PROFILE.avatar
-              ? <img src={PROFILE.avatar} alt={PROFILE.displayName} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-              : PROFILE.displayName[0].toUpperCase()
-            }
-          </div>
-
-          {/* 名前（グリッチ） */}
-          <div style={{ position:'relative', marginBottom:10 }}>
-            <h1 style={{
-              fontFamily:"'Space Mono',monospace",
-              fontSize:'clamp(22px,5vw,38px)',
-              fontWeight:700, letterSpacing:'-1px',
-              color:'#eceef2',
-              textShadow:'0 0 8px rgba(0,229,160,.5), 2px 0 rgba(255,0,60,.3), -2px 0 rgba(0,247,255,.3)',
-              animation:'flicker2 5s linear infinite',
-            }}>{glitchName}</h1>
-            {/* RGBずれ（グリッチ複製） */}
-            <h1 aria-hidden style={{
-              position:'absolute', inset:0,
-              fontFamily:"'Space Mono',monospace",
-              fontSize:'clamp(22px,5vw,38px)',
-              fontWeight:700, letterSpacing:'-1px',
-              color:'transparent',
-              animation:'glitchR 4s linear infinite',
-            }}>{PROFILE.displayName}</h1>
-          </div>
-
-          {/* 大学・専攻 */}
-          <p style={{
-            fontFamily:"'Space Mono',monospace", fontSize:12,
-            color:'#4a7a6a', letterSpacing:'1px', marginBottom:32, lineHeight:1.8,
-            textShadow:'0 0 6px rgba(0,229,160,.3)',
-            animation:'flicker 12s linear infinite 2s',
-          }}>
-            {PROFILE.university}<br/>{PROFILE.department}
-          </p>
-
-          {/* SNSボタン */}
-          {socialLinks.length > 0 && (
-            <div style={{display:'flex',gap:8,marginBottom:40,flexWrap:'wrap',justifyContent:'center'}}>
-              {socialLinks.map(l=>(
-                <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
-                  onClick={e=>e.stopPropagation()}
-                  style={{
-                    fontFamily:"'Space Mono',monospace", fontSize:11,
-                    color:'#4a5568', padding:'6px 14px',
-                    border:'1px solid #2a3040', borderRadius:3,
-                    transition:'all .15s',
-                    textShadow:'none',
-                  }}
-                  onMouseEnter={e=>{
-                    e.currentTarget.style.borderColor='#00e5a0';
-                    e.currentTarget.style.color='#00e5a0';
-                    e.currentTarget.style.boxShadow='0 0 16px rgba(0,229,160,.6), inset 0 0 8px rgba(0,229,160,.1)';
-                    e.currentTarget.style.textShadow='0 0 8px rgba(0,229,160,.8)';
-                  }}
-                  onMouseLeave={e=>{
-                    e.currentTarget.style.borderColor='#2a3040';
-                    e.currentTarget.style.color='#4a5568';
-                    e.currentTarget.style.boxShadow='none';
-                    e.currentTarget.style.textShadow='none';
-                  }}
-                >{l.label}</a>
-              ))}
-            </div>
-          )}
-
-          {/* 入るボタン（バチバチ） */}
-          <button
-            className="zap-btn"
-            onClick={handleEnter}
-            style={{
-              display:'flex', alignItems:'center', gap:10,
-              background:'transparent',
-              border:'1px solid rgba(0,229,160,.9)',
-              color:'#00e5a0', borderRadius:3,
-              padding:'13px 32px',
-              fontSize:14, fontWeight:600,
-              fontFamily:"'Space Grotesk',sans-serif",
-              cursor:'pointer', letterSpacing:'2px',
-              textTransform:'uppercase',
-              textShadow:'0 0 8px rgba(0,229,160,.8)',
-              animation:'btnZap 2s ease-in-out infinite',
-              transition:'all .1s',
-            }}
-          >
-            Enter
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-          {/* 電流警告テキスト */}
-          <p style={{
-            fontFamily:"'Space Mono',monospace", fontSize:9,
-            color:'rgba(0,229,160,.3)', marginTop:24, letterSpacing:'3px',
-            textTransform:'uppercase',
-            animation:'flicker 3s linear infinite 1s',
-          }}>
-            ⚡ WARNING: HIGH VOLTAGE ⚡
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
 /* ══════════════════════════════════════════
    ナビゲーション
 ══════════════════════════════════════════ */
@@ -486,7 +50,7 @@ function Nav() {
   }, [location.pathname]);
 
   const links = [
-    { to: "/",        label: "Home" },
+    { to: "/home",    label: "Home" },
     { to: "/about",   label: "About" },
     { to: "/works",   label: "Works" },
     { to: "/history", label: "History" },
@@ -558,38 +122,6 @@ function SnsBar() {
 /* ══════════════════════════════════════════
    ページ: Home
 ══════════════════════════════════════════ */
-function ArchDiagram() {
-  const box = (label, cls = "") => (
-    <span style={{
-      background: cls === "g" ? "rgba(0,229,160,.1)" : cls === "b" ? "rgba(59,130,246,.1)" : "var(--surface)",
-      border: `1px solid ${cls === "g" ? "rgba(0,229,160,.35)" : cls === "b" ? "rgba(59,130,246,.35)" : "var(--border2)"}`,
-      color: cls === "g" ? "var(--accent)" : cls === "b" ? "var(--accent2)" : "var(--muted2)",
-      borderRadius: 5, padding: "4px 10px", fontFamily: "var(--mono)", fontSize: 10, whiteSpace: "nowrap",
-    }}>{label}</span>
-  );
-  return (
-    <div style={{ width: "100%", padding: 24, display: "flex", flexDirection: "column", gap: 10 }}>
-      <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--muted)", letterSpacing: 1.5, marginBottom: 4 }}>SYSTEM ARCHITECTURE</div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-        {box("Hardware","g")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
-        {box("RPi 5","b")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
-        {box("ngrok")}<span style={{ color: "var(--muted)", fontSize: 11 }}>→</span>
-        {box("LINE","g")}
-      </div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["赤外線センサ","ロードセル","カメラ","サーボ"].map(s => box(s))}
-      </div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["lgpio","Flask","OpenCV","Python"].map(s => box(s,"b"))}
-      </div>
-      <div style={{ marginTop: 6, padding: "10px 12px", background: "var(--accent-dim)", borderRadius: 5, border: "1px solid rgba(0,229,160,.15)", fontFamily: "var(--mono)", fontSize: 10, color: "var(--muted2)", lineHeight: 1.8 }}>
-        <span style={{ color: "var(--accent)", display: "block", marginBottom: 2 }}>$ フロー</span>
-        LINE:「餌」→ Webhook → Flask → lgpio → サーボ → 給餌
-      </div>
-    </div>
-  );
-}
-
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -623,6 +155,7 @@ function ContactForm() {
 
 function HomePage() {
   const [active, setActive] = useState("home");
+
   useEffect(() => {
     const ids = ["home","about-sec","projects","skills","contact"];
     const obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setActive(e.target.id)), { threshold: 0.3 });
@@ -632,6 +165,8 @@ function HomePage() {
 
   return (
     <>
+
+
       {/* Hero */}
       <section id="home" className="hero">
         <div className="hero-grid" />
@@ -697,7 +232,7 @@ function HomePage() {
           {WORKS.slice(0, 3).map((w, i) => (
             <div key={w.title} className="work-card">
               <div className="work-thumb">
-                {i === 0 ? <ArchDiagram /> : w.image ? <img src={w.image} alt={w.title} /> : (
+                {w.image ? <img src={w.image} alt={w.title} /> : (
                   <div className="work-thumb-placeholder">
                     <div className="work-thumb-icon">◻</div>
                     <div className="work-thumb-label">// 画像追加予定</div>
@@ -875,42 +410,7 @@ function WorksPage() {
           {WORKS.map((w, i) => (
             <div key={w.title} className="work-card">
               <div className="work-thumb">
-                {i === 0 ? (
-                  <div style={{ width: "100%", padding: 20, display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontFamily: "var(--mono)", fontSize: 9, color: "var(--muted)", letterSpacing: 1.5 }}>SYSTEM ARCHITECTURE</div>
-                    {[
-                      ["Hardware","g"], ["RPi 5","b"], ["ngrok",""], ["LINE","g"]
-                    ].reduce((acc, [label, cls], idx, arr) => {
-                      const box = <span key={label} style={{
-                        background: cls==="g"?"rgba(0,229,160,.1)":cls==="b"?"rgba(59,130,246,.1)":"var(--surface)",
-                        border:`1px solid ${cls==="g"?"rgba(0,229,160,.35)":cls==="b"?"rgba(59,130,246,.35)":"var(--border2)"}`,
-                        color: cls==="g"?"var(--accent)":cls==="b"?"var(--accent2)":"var(--muted2)",
-                        borderRadius:4, padding:"3px 8px", fontFamily:"var(--mono)", fontSize:10, whiteSpace:"nowrap",
-                      }}>{label}</span>;
-                      acc.push(box);
-                      if (idx < arr.length - 1) acc.push(<span key={"arr"+idx} style={{ color:"var(--muted)", fontSize:10 }}>→</span>);
-                      return acc;
-                    }, []).reduce((row, el, idx) => {
-                      return idx === 0 ? [<div key="row" style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>{[el]}</div>] : (React => row)(null);
-                    }, [])}
-                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
-                      {[["Hardware","g"],["→",""],["RPi 5","b"],["→",""],["ngrok",""],["→",""],["LINE","g"]].map(([l,c],i)=>(
-                        l==="→"
-                          ? <span key={i} style={{color:"var(--muted)",fontSize:10}}>→</span>
-                          : <span key={i} style={{background:c==="g"?"rgba(0,229,160,.1)":c==="b"?"rgba(59,130,246,.1)":"var(--surface)",border:`1px solid ${c==="g"?"rgba(0,229,160,.35)":c==="b"?"rgba(59,130,246,.35)":"var(--border2)"}`,color:c==="g"?"var(--accent)":c==="b"?"var(--accent2)":"var(--muted2)",borderRadius:4,padding:"3px 8px",fontFamily:"var(--mono)",fontSize:10}}>{l}</span>
-                      ))}
-                    </div>
-                    <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
-                      {["lgpio","Flask","OpenCV","Python"].map(s=>(
-                        <span key={s} style={{background:"rgba(59,130,246,.1)",border:"1px solid rgba(59,130,246,.35)",color:"var(--accent2)",borderRadius:4,padding:"2px 7px",fontFamily:"var(--mono)",fontSize:9}}>{s}</span>
-                      ))}
-                    </div>
-                    <div style={{ padding:"8px 10px", background:"var(--accent-dim)", borderRadius:4, border:"1px solid rgba(0,229,160,.15)", fontFamily:"var(--mono)", fontSize:9, color:"var(--muted2)", lineHeight:1.8 }}>
-                      <span style={{ color:"var(--accent)" }}>$ フロー: </span>
-                      「餌」→ Webhook → Flask → lgpio → 給餌
-                    </div>
-                  </div>
-                ) : w.image ? (
+                {w.image ? (
                   <img src={w.image} alt={w.title} />
                 ) : (
                   <div className="work-thumb-placeholder">
@@ -983,27 +483,16 @@ function HistoryPage() {
    App ルート
 ══════════════════════════════════════════ */
 export default function App() {
-  const [entered, setEntered] = useState(false);
-
-  if (!entered) {
-    return (
-      <>
-        <style>{styles}</style>
-        <SplashScreen onEnter={() => setEntered(true)} />
-      </>
-    );
-  }
-
   return (
     <>
       <style>{styles}</style>
       <BrowserRouter>
-        <Nav />
         <Routes>
-          <Route path="/"        element={<HomePage />} />
-          <Route path="/about"   element={<AboutPage />} />
-          <Route path="/works"   element={<WorksPage />} />
-          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/"        element={<SplashScreen />} />
+          <Route path="/home"    element={<><Nav /><HomePage /></>} />
+          <Route path="/about"   element={<><Nav /><AboutPage /></>} />
+          <Route path="/works"   element={<><Nav /><WorksPage /></>} />
+          <Route path="/history" element={<><Nav /><HistoryPage /></>} />
         </Routes>
       </BrowserRouter>
     </>
