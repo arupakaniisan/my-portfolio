@@ -6,6 +6,8 @@ import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Works from './pages/Works.jsx';
 import History from './pages/History.jsx';
+import BlogList from './pages/BlogList.jsx';
+import BlogPost from './pages/BlogPost.jsx';
 
 
 
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/about"   element={<><Nav /><About /></>} />
           <Route path="/works"   element={<><Nav /><Works /></>} />
           <Route path="/history" element={<><Nav /><History /></>} />
+          <Route path="/blog"    element={<><Nav /><BlogList /></>} />
+          <Route path="/blog/:slug" element={<><Nav /><BlogPost /></>} />
         </Routes>
       </BrowserRouter>
     </>

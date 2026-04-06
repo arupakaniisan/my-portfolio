@@ -14,7 +14,7 @@ export const PROFILE = {
   avatar: null,        // 例: "/avatar.jpg"
   github:   "https://github.com/arupakaniisan",
   linkedin: null,      // 例: "https://linkedin.com/in/yourhandle"
-  zenn:     null,      // 例: "https://zenn.dev/yourhandle"
+  zenn:     "https://zenn.dev/arupakani_san",
   note:     null,      // 例: "https://note.com/yourhandle"
   twitter:  null,      // 例: "https://twitter.com/yourhandle"
   email:    null,      // 例: "your@email.com"
@@ -24,14 +24,14 @@ export const PROFILE = {
 export const ABOUT = {
   // プロフィール詳細
   profile: [
-    { label: "名前",  value: "（本名を入力してください）" },
+    { label: "名前",  value: "アルパカ兄さん" },
     { label: "所属",  value: "電気通信大学 先端ロボティクス専攻" },
-    { label: "学年",  value: "〇年生" },
+    { label: "学年",  value: "3年生" },
     { label: "居住",  value: "東京都" },
   ],
   // 資格・受賞
   qualifications: [
-    { title: "基本情報技術者試験 合格",    date: "2024-xx" },
+    { title: "危険物取扱者乙4",            date: "取得" },
     // { title: "〇〇資格",                date: "2023-xx" },
     // ← 追加・削除してください
   ],

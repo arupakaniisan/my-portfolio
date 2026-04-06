@@ -20,7 +20,7 @@ export default function About() {
         <div className="about-avatar">
           {PROFILE.avatar
             ? <img src={PROFILE.avatar} alt={PROFILE.displayName} />
-            : PROFILE.displayName[0].toUpperCase()
+            : <img src="/arupaka.jpg" alt="arupaka" />
           }
         </div>
 

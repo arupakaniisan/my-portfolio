@@ -1,20 +1,9 @@
-import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { PROFILE, SKILLS, WORKS } from "../data.js";
 import { Footer } from "../components/Footer.jsx";
 import { SnsBar, ContactForm } from "../components/common.jsx";
-import { IconGitHub, IconZenn, IconNote } from "../components/Icons.jsx";
 
 export default function Home() {
-  const [active, setActive] = useState("home");
-
-  useEffect(() => {
-    const ids = ["home","about-sec","projects","skills","contact"];
-    const obs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setActive(e.target.id)), { threshold: 0.3 });
-    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, []);
-
   return (
     <>
       {/* Hero */}

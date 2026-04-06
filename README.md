@@ -20,6 +20,7 @@
 11. [コンタクトフォームを動くようにする](#11-コンタクトフォームを動くようにする)
 12. [よくあるトラブル](#12-よくあるトラブル)
 13. [ファイル構成の説明](#13-ファイル構成の説明)
+14. [ブログをMarkdownで追加する](#14-ブログをmarkdownで追加する)
 
 ---
 
@@ -454,4 +455,50 @@ my_portfolio/
 
 ---
 
-*最終更新: 2025年*
+## 14. ブログをMarkdownで追加する
+
+このプロジェクトでは、`src/content/blog/` に `.md` ファイルを追加するだけでブログ記事を増やせます。
+
+### 使い方
+
+1. `src/content/blog/` に新しいファイルを作る
+2. ファイル名は `YYYY-MM-DD-slug.md` 形式にする
+3. 先頭に front matter を書く
+
+```md
+---
+title: 記事タイトル
+date: 2026-04-07
+excerpt: 記事一覧に表示する短い説明文
+published: true
+---
+
+# 記事タイトル
+
+本文を Markdown で書く。
+```
+
+### 反映先
+
+- 一覧ページ: `/blog`
+- 詳細ページ: `/blog/ファイル名（拡張子なし）`
+
+### 実装ファイル
+
+- `src/lib/blog.js`: Markdown読み込み・front matter解析・HTML変換
+- `src/pages/BlogList.jsx`: 記事一覧
+- `src/pages/BlogPost.jsx`: 記事詳細
+- `src/content/blog/*.md`: 記事本体
+
+### Markdownサニタイズ（任意）
+
+MarkdownをHTML表示するときのサニタイズはデフォルトで有効です。
+
+- デフォルト: 有効（`VITE_SANITIZE_MARKDOWN` 未設定）
+- 無効化したい場合のみ: `.env` に `VITE_SANITIZE_MARKDOWN=false` を設定
+
+> 設定変更後は `npm run dev` を再起動してください。
+
+---
+
+*最終更新: 2026年*

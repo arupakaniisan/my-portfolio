@@ -396,7 +396,6 @@ export default function SplashScreen() {
             position:'absolute',...s,
             width:36,height:36,
             borderColor:'rgba(0,229,160,.9)',
-            boxShadow:'0 0 12px rgba(0,229,160,.6)',
             zIndex:4,pointerEvents:'none',
             boxShadow:'0 0 10px rgba(0,229,160,.35)',
           }}/>
