@@ -183,27 +183,6 @@ function LightningCanvas() {
   );
 }
 
-// 白いフラッシュ
-function WhiteFlash() {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const fire = () => {
-      setOn(true);
-      setTimeout(() => setOn(false), 40 + Math.random() * 200);
-    };
-    const rand = () => setTimeout(() => { fire(); rand(); }, 2000 + Math.random() * 5000);
-    const t = rand();
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <div style={{
-      position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-      background: 'rgba(200,255,230,.04)',
-      opacity: on ? 1 : 0, transition: 'opacity .04s',
-    }} />
-  );
-}
-
 export default function SplashScreen() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
@@ -234,7 +213,7 @@ export default function SplashScreen() {
           arr[idx] = chars[Math.floor(Math.random() * chars.length)];
         }
         setGlitchName(arr.join(''));
-        setTimeout(() => setGlitchName(orig), 80);
+        setTimeout(() => setGlitchName(orig), 240);
       }
     };
     const id = setInterval(glitch, 50);
@@ -295,8 +274,8 @@ export default function SplashScreen() {
     // 最後にグリーンフラッシュで遷移
     // 最後のログ(2800ms) + 3秒待機 = 5800ms で光が広がり始める
     setTimeout(() => setLeaving(true), 5800);
-    // 光がゆっくり広がる(1.2s) 後に遷移
-    setTimeout(() => navigate('/home'), 7000);
+    // 光の余韻を長めにしてドキドキ感を演出
+    setTimeout(() => navigate('/home'), 8200);
   };
 
   const socialLinks = [
@@ -319,7 +298,7 @@ export default function SplashScreen() {
         transition: 'opacity .8s ease',
         opacity: leaving ? 0 : visible ? 1 : 0,
         pointerEvents: leaving ? 'none' : 'auto',
-        animation: visible ? 'flicker 11s linear infinite' : 'none',
+        animation: 'none',
       }}>
 
         {/* リアルタイム稲妻 canvas */}
@@ -364,10 +343,10 @@ export default function SplashScreen() {
         {/* 中央から白い光が広がるトランジション */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 25, pointerEvents: 'none',
-          background: 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e8f4ee 20%, #0b0c0e 70%)',
+          background: 'radial-gradient(circle at 50% 50%, #f0f8ff 0%, #e0f4ff 8%, #d0e8fc 15%, #c5dff8 25%, #b8d8f5 35%, #a8cef0 50%, #7fb8e0 65%, #5a9fd6 80%, #0b0c0e 95%)',
           opacity: leaving ? 1 : 0,
           transform: leaving ? 'scale(3)' : 'scale(0)',
-          transition: leaving ? 'opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.1,0,0.3,1)' : 'none',
+          transition: leaving ? 'opacity 2.2s cubic-bezier(0.25,0.46,0.45,0.94), transform 2.2s cubic-bezier(0.34,1.56,0.64,1)' : 'none',
           borderRadius: '50%',
         }} />
         {/* 背景を /home と同じ色で覆う（光が広がった後） */}
@@ -375,11 +354,8 @@ export default function SplashScreen() {
           position: 'absolute', inset: 0, zIndex: 24, pointerEvents: 'none',
           background: '#0b0c0e',
           opacity: leaving ? 1 : 0,
-          transition: leaving ? 'opacity 1.2s ease-out 0.6s' : 'none',
+          transition: leaving ? 'opacity 2.2s cubic-bezier(0.25,0.46,0.45,0.94) 1.1s' : 'none',
         }} />
-
-        {/* 白フラッシュ */}
-        <WhiteFlash />
 
         {/* CRTスキャンライン */}
         <div style={{
@@ -439,7 +415,7 @@ export default function SplashScreen() {
 
           {/* アバター */}
           <div style={{
-            width:96, height:96, borderRadius:'50%',
+            width:144, height:144, borderRadius:'50%',
             background:'rgba(0,229,160,.06)',
             border:'2px solid rgba(0,229,160,.9)',
             display:'flex', alignItems:'center', justifyContent:'center',
@@ -449,7 +425,7 @@ export default function SplashScreen() {
           }}>
             {PROFILE.avatar
               ? <img src={PROFILE.avatar} alt={PROFILE.displayName} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-              : PROFILE.displayName[0].toUpperCase()
+              : <img src="/arupaka.jpg" alt="arupaka" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
             }
           </div>
 
@@ -541,7 +517,7 @@ export default function SplashScreen() {
 
           {/* 電流警告テキスト */}
           <p style={{
-            fontFamily:"'Space Mono',monospace", fontSize:9,
+            fontFamily:"'Space Mono',monospace", fontSize:18,
             color:'rgba(0,229,160,.3)', marginTop:24, letterSpacing:'3px',
             textTransform:'uppercase',
             animation:'flicker 3s linear infinite 1s',
