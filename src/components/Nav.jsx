@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { PROFILE } from "../data.js";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,9 +27,8 @@ export function Nav() {
   return (
     <>
       <nav className={`nav${scrolled ? " solid" : ""}`}>
-        <NavLink to="/" className="nav-logo">
-          {PROFILE.displayName}
-          <span className="nav-cursor" />
+        <NavLink to="/" className="nav-logo" aria-label="Go to splash home">
+          <img src="/arupaka.jpg" alt="arupaka icon" className="nav-logo-icon" />
         </NavLink>
         <div className="nav-links">
           {links.map(l => (

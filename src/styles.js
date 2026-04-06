@@ -81,8 +81,25 @@ body::after {
 }
 .nav.solid { border-color: var(--border2); }
 .nav-logo {
-  font-family: var(--mono); font-size: 14px; font-weight: 700;
-  display: flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border2);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.nav-logo:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+.nav-logo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .nav-logo-home {
   font-family: var(--mono);
