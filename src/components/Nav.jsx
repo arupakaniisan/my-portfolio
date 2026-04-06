@@ -21,8 +21,18 @@ export function Nav() {
 
   useEffect(() => {
     setMenuOpen(false);
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    if (!location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (!location.hash) return;
+    const targetId = location.hash.replace("#", "");
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(NAV_NAME_STORAGE_KEY);
@@ -59,6 +69,7 @@ export function Nav() {
     { to: "/home",    label: "Home" },
     { to: "/about",   label: "About" },
     { to: "/works",   label: "Works" },
+    { to: "/home#contact", label: "Contact" },
     { to: "/history", label: "History" },
     { to: "/blog",    label: "Blog" },
   ];

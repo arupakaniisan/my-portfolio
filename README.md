@@ -358,37 +358,30 @@ git push
 
 ## 11. コンタクトフォームを動くようにする
 
-現在はフォームを送信しても実際にはメールが届かない（見た目だけ）。
-実際に受け取れるようにするには **Formspree**（無料）を使う。
+現在の ContactForm は **EmailJS** を使って `aruni.san.tech@gmail.com` に送信するようにしています。
 
 ### 手順
 
-1. [formspree.io](https://formspree.io) でアカウント作成（無料）
-2. 「New Form」→ 受け取るメールアドレスを入力
-3. 発行された **Form ID**（`xyzabcde` のような8文字）をコピー
-4. `src/App.jsx` を開いて `ContactForm` 関数の中を探す
-5. 以下のコメントアウト（`//` のついている行）を有効にする
+1. [emailjs.com](https://www.emailjs.com) でアカウント作成
+2. Email Service を作成する
+3. Email Template を作成し、送信先に `aruni.san.tech@gmail.com` を指定する
+4. 取得した `Service ID` / `Template ID` / `Public Key` を `.env` に入れる
 
-変更前：
-```js
-// const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-//   method: "POST",
-//   headers: { "Content-Type": "application/json" },
-//   body: JSON.stringify(form),
-// });
-// if (res.ok) setSent(true);
-setSent(true);
+### `.env` の例
+
+```env
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
 ```
 
-変更後（`//` を取り除いて `YOUR_FORM_ID` を実際のIDに変える）：
-```js
-const res = await fetch("https://formspree.io/f/xyzabcde", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(form),
-});
-if (res.ok) setSent(true);
-```
+### テンプレートで使う変数
+
+- `to_email`: 送信先メールアドレス
+- `from_name`: お名前
+- `from_email`: メールアドレス
+- `message`: 本文
+- `reply_to`: 返信先
 
 ---
 

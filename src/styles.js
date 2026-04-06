@@ -310,7 +310,7 @@ body::after {
 .slegend .dot-b { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); }
 
 /* ── CONTACT ── */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.contact-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
 .cinfo h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
 .cinfo p { font-size: 14px; color: var(--muted2); line-height: 1.8; font-weight: 300; margin-bottom: 24px; }
 .socials { display: flex; flex-direction: column; gap: 10px; }
@@ -318,13 +318,18 @@ body::after {
 .soc:hover { border-color: var(--accent); color: var(--accent); }
 .soc-badge { font-family: var(--mono); font-size: 10px; background: var(--surface2); border: 1px solid var(--border2); padding: 3px 7px; border-radius: 3px; letter-spacing: 1px; flex-shrink: 0; }
 .form { display: flex; flex-direction: column; gap: 12px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-title { font-family: var(--mono); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.form-row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.form-field { display: flex; flex-direction: column; gap: 8px; }
+.form-label { font-size: 13px; color: var(--muted2); font-weight: 600; }
 .form input, .form textarea { width: 100%; padding: 11px 14px; background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; font-family: var(--sans); font-size: 14px; color: var(--text); outline: none; transition: border-color .2s; resize: vertical; }
 .form input:focus, .form textarea:focus { border-color: var(--accent); }
 .form input::placeholder, .form textarea::placeholder { color: var(--muted); }
 .form textarea { min-height: 110px; }
+.form-error { font-size: 13px; color: #fca5a5; line-height: 1.7; }
 .form-btn { background: var(--accent); color: #0b0c0e; border: none; border-radius: 6px; padding: 13px; font-size: 14px; font-weight: 700; font-family: var(--sans); transition: opacity .2s; letter-spacing: .3px; }
 .form-btn:hover { opacity: .85; }
+.form-btn:disabled { opacity: .6; cursor: not-allowed; }
 .form-sent { padding: 40px; text-align: center; background: var(--surface); border: 1px solid rgba(0,229,160,.2); border-radius: 8px; }
 .form-sent-icon { font-size: 28px; margin-bottom: 10px; color: var(--accent); }
 .form-sent p { color: var(--muted2); font-size: 14px; }

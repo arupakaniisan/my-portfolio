@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { PROFILE, SKILLS, WORKS } from "../data.js";
 import { Footer } from "../components/Footer.jsx";
-import { SnsBar, ContactForm } from "../components/common.jsx";
+import { ContactForm } from "../components/common.jsx";
+import { IconGitHub, IconZenn } from "../components/Icons.jsx";
 
 export default function Home() {
   return (
@@ -59,6 +60,46 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <div className="about-section-title">リンク</div>
+        <div className="social-links">
+          {PROFILE.github && (
+            <a href={PROFILE.github} target="_blank" rel="noreferrer" className="social-link">
+              <IconGitHub />GitHub
+            </a>
+          )}
+          {PROFILE.zenn && (
+            <a href={PROFILE.zenn} target="_blank" rel="noreferrer" className="social-link">
+              <IconZenn />Zenn
+            </a>
+          )}
+        </div>
+      </section>
+
+      <div className="sep" />
+
+      {/* Skills */}
+      <section id="skills" className="sec">
+        <div className="sec-eye">// skills</div>
+        <h2 className="sec-title">Skills</h2>
+        <div className="skills-grid">
+          {SKILLS.map(s => (
+            <div key={s.category} className="scard">
+              <div className="scat">{s.category}</div>
+              <div className="sitems">
+                {s.items.map(item => (
+                  <div key={item.name} className="sitem">
+                    <span className={`sdot ${item.level}`} />
+                    {item.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="slegend">
+          <span><span className="dot-g" />得意</span>
+          <span><span className="dot-b" />学習中・使用経験あり</span>
+        </div>
       </section>
 
       <div className="sep" />
@@ -98,33 +139,6 @@ export default function Home() {
 
       <div className="sep" />
 
-      {/* Skills */}
-      <section id="skills" className="sec">
-        <div className="sec-eye">// skills</div>
-        <h2 className="sec-title">Skills</h2>
-        <div className="skills-grid">
-          {SKILLS.map(s => (
-            <div key={s.category} className="scard">
-              <div className="scat">{s.category}</div>
-              <div className="sitems">
-                {s.items.map(item => (
-                  <div key={item.name} className="sitem">
-                    <span className={`sdot ${item.level}`} />
-                    {item.name}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="slegend">
-          <span><span className="dot-g" />得意</span>
-          <span><span className="dot-b" />学習中・使用経験あり</span>
-        </div>
-      </section>
-
-      <div className="sep" />
-
       {/* Contact */}
       <section id="contact" className="sec">
         <div className="sec-eye">// contact</div>
@@ -134,16 +148,13 @@ export default function Home() {
             <h3>気軽にご連絡ください</h3>
             <p>インターンのお誘い、ハッカソンでのチーム募集、共同開発など、どんなご連絡でも歓迎します。ハッカソン会場でお会いした方もぜひ！</p>
             <div className="socials">
-              {PROFILE.github && <a href={PROFILE.github} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">GH</span>github.com/arupakaniisan</a>}
               {PROFILE.twitter && <a href={PROFILE.twitter} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">𝕏</span>Twitter / X</a>}
-              {PROFILE.zenn && <a href={PROFILE.zenn} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">Z</span>Zenn</a>}
               {PROFILE.note && <a href={PROFILE.note} target="_blank" rel="noreferrer" className="soc"><span className="soc-badge">N</span>note</a>}
               {PROFILE.email && <a href={`mailto:${PROFILE.email}`} className="soc"><span className="soc-badge">@</span>{PROFILE.email}</a>}
             </div>
+            <ContactForm />
           </div>
-          <ContactForm />
         </div>
-        <SnsBar />
       </section>
 
       <Footer />
