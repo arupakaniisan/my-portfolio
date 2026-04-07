@@ -274,8 +274,8 @@ export default function SplashScreen() {
     // 最後にグリーンフラッシュで遷移
     // 最後のログ(2800ms) + 3秒待機 = 5800ms で光が広がり始める
     setTimeout(() => setLeaving(true), 5800);
-    // 光の余韻を長めにしてドキドキ感を演出
-    setTimeout(() => navigate('/home'), 8200);
+    // 白フラッシュ後の黒画面滞在を短縮
+    setTimeout(() => navigate('/home'), 7000);
   };
 
   const socialLinks = [
@@ -340,21 +340,33 @@ export default function SplashScreen() {
           </div>
         )}
 
-        {/* 中央から白い光が広がるトランジション */}
+        {/* トンネルから外へ抜けるトランジション */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 25, pointerEvents: 'none',
-          background: 'radial-gradient(circle at 50% 50%, #f0f8ff 0%, #e0f4ff 8%, #d0e8fc 15%, #c5dff8 25%, #b8d8f5 35%, #a8cef0 50%, #7fb8e0 65%, #5a9fd6 80%, #0b0c0e 95%)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 0%, rgba(249,255,251,1) 4%, rgba(238,255,248,.98) 8%, rgba(216,255,238,.95) 14%, rgba(181,255,226,.9) 22%, rgba(123,255,214,.76) 32%, rgba(0,229,160,.42) 44%, rgba(11,12,14,0) 64%)',
           opacity: leaving ? 1 : 0,
-          transform: leaving ? 'scale(3)' : 'scale(0)',
-          transition: leaving ? 'opacity 2.2s cubic-bezier(0.25,0.46,0.45,0.94), transform 2.2s cubic-bezier(0.34,1.56,0.64,1)' : 'none',
+          transform: leaving ? 'scale(3.8)' : 'scale(0.05)',
+          transition: leaving ? 'opacity 1.2s cubic-bezier(0.25,0.46,0.45,0.94), transform 1.2s cubic-bezier(0.34,1.56,0.64,1)' : 'none',
           borderRadius: '50%',
+          filter: 'saturate(2) brightness(1.8) contrast(1.06) blur(.35px)',
+          boxShadow: '0 0 180px rgba(255,255,255,1), 0 0 320px rgba(255,255,255,.72), 0 0 520px rgba(0,229,160,.7)',
         }} />
-        {/* 背景を /home と同じ色で覆う（光が広がった後） */}
+        {/* 外に抜けた直後の白い余韻 */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 24, pointerEvents: 'none',
-          background: '#0b0c0e',
+          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,.2) 0%, rgba(255,255,255,.18) 20%, rgba(255,255,255,.12) 38%, rgba(255,255,255,.06) 58%, rgba(255,255,255,0) 78%)',
           opacity: leaving ? 1 : 0,
-          transition: leaving ? 'opacity 2.2s cubic-bezier(0.25,0.46,0.45,0.94) 1.1s' : 'none',
+          transform: leaving ? 'scale(1.08)' : 'scale(1)',
+          transition: leaving ? 'opacity .95s cubic-bezier(0.25,0.46,0.45,0.94) .15s, transform .95s cubic-bezier(0.25,0.46,0.45,0.94) .15s' : 'none',
+        }} />
+
+        {/* 全画面が明るくなる仕上げ */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 26, pointerEvents: 'none',
+          background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 0%, rgba(255,255,255,.98) 34%, rgba(245,255,249,.95) 58%, rgba(225,255,240,.78) 78%, rgba(11,12,14,0) 100%)',
+          opacity: leaving ? 1 : 0,
+          transform: leaving ? 'scale(1.02)' : 'scale(1)',
+          transition: leaving ? 'opacity 1.05s ease .45s, transform 1.05s ease .45s' : 'none',
         }} />
 
         {/* CRTスキャンライン */}
